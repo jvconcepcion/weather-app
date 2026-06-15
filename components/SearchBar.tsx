@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ActivityIndicator, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { searchLocations, type GeocodingResult } from '../services/geocoding';
 
@@ -9,23 +9,6 @@ export function SearchBar() {
   const [results, setResults] = useState<GeocodingResult[]>([]);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-
-  async function handleSearch(text: string) {
-    setQuery(text);
-    if (text.length < 2) {
-      setResults([]);
-      return;
-    }
-    setLoading(true);
-    try {
-      const data = await searchLocations(text);
-      setResults(data);
-    } catch {
-      setResults([]);
-    } finally {
-      setLoading(false);
-    }
-  }
 
   function handleSelect(result: GeocodingResult) {
     setQuery('');
@@ -41,6 +24,26 @@ export function SearchBar() {
     });
   }
 
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      if (query.length >= 2) {
+        setLoading(true);
+        try {
+          const data = await searchLocations(query);
+          setResults(data);
+        } catch {
+          setResults([]);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        setResults([]);
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [query]);
+
   return (
     <View className="relative z-10">
       <View className="flex-row items-center bg-white/15 border border-white/25 rounded-2xl px-4 h-12">
@@ -50,7 +53,7 @@ export function SearchBar() {
           placeholder="Search city..."
           placeholderTextColor="rgba(255,255,255,0.5)"
           value={query}
-          onChangeText={handleSearch}
+          onChangeText={setQuery}
           returnKeyType="search"
         />
         {loading && <ActivityIndicator size="small" color="rgba(255,255,255,0.7)" />}
