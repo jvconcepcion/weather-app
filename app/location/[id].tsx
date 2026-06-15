@@ -65,6 +65,9 @@ export default function LocationScreen() {
           ) : weather.error ? (
             <View style={{ alignItems: 'center', paddingVertical: 80 }}>
               <Text className="text-white text-center">{weather.error}</Text>
+              <TouchableOpacity onPress={handleRefresh} className="m-2 border border-white rounded-md px-4 py-2">
+                <Text className="text-white">Try Again</Text>
+              </TouchableOpacity>
             </View>
           ) : weather.data ? (
             <View style={{ gap: 16, marginTop: 8 }}>
