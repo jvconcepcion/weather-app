@@ -1,6 +1,6 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, RefreshControl, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, RefreshControl, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CurrentWeather } from '../components/CurrentWeather';
 import { DailyForecast } from '../components/DailyForecast';
@@ -36,7 +36,7 @@ export default function HomeScreen() {
   return (
     <LinearGradient colors={gradient} style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView 
+        <ScrollView
           contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 32 }}
           refreshControl={
             <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} tintColor="white" />
@@ -54,10 +54,16 @@ export default function HomeScreen() {
           ) : location.error ? (
             <View style={{ alignItems: 'center', paddingVertical: 80 }}>
               <Text className="text-white text-center">{location.error}</Text>
+              <TouchableOpacity onPress={handleRefresh} className="m-2 border border-white rounded-md px-4 py-2">
+                <Text className="text-white">Try Again</Text>
+              </TouchableOpacity>
             </View>
           ) : weather.error ? (
             <View style={{ alignItems: 'center', paddingVertical: 80 }}>
               <Text className="text-white text-center">{weather.error}</Text>
+              <TouchableOpacity onPress={handleRefresh} className="m-2 border border-white rounded-md px-4 py-2">
+                <Text className="text-white">Try Again</Text>
+              </TouchableOpacity>
             </View>
           ) : weather.data ? (
             <View style={{ gap: 16 }}>
