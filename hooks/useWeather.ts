@@ -7,7 +7,7 @@ export type WeatherState = {
   error: string | null;
 };
 
-export function useWeather(latitude: number | null, longitude: number | null): WeatherState {
+export function useWeather(latitude: number | null, longitude: number | null, refreshKey: number): WeatherState {
   const [state, setState] = useState<WeatherState>({
     data: null,
     loading: false,
@@ -31,7 +31,7 @@ export function useWeather(latitude: number | null, longitude: number | null): W
     return () => {
       cancelled = true;
     };
-  }, [latitude, longitude]);
+  }, [latitude, longitude, refreshKey]);
 
   return state;
 }
