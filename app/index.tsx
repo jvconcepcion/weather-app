@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CurrentWeather } from '../components/CurrentWeather';
+import { DailyForecast } from '../components/DailyForecast';
 import { HourlyForecast } from '../components/HourlyForecast';
 import { SearchBar } from '../components/SearchBar';
 import { WeatherStats } from '../components/WeatherStats';
@@ -90,6 +91,7 @@ export default function HomeScreen() {
                 sunset={weather.data.daily.sunset[0]}
               />
               <HourlyForecast data={weather.data.hourly} />
+              <DailyForecast data={weather.data.daily} />
             </View>
           ) : null}
         </ScrollView>
