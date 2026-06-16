@@ -1,9 +1,15 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, RefreshControl, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  RefreshControl,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CurrentWeather } from '../components/CurrentWeather';
-import { DailyForecast } from '../components/DailyForecast';
 import { HourlyForecast } from '../components/HourlyForecast';
 import { SearchBar } from '../components/SearchBar';
 import { WeatherStats } from '../components/WeatherStats';
@@ -20,15 +26,15 @@ export default function HomeScreen() {
 
   async function handleRefresh() {
     setIsRefreshing(true);
-    setRefreshKey(prev => prev + 1);
-  };
+    setRefreshKey((prev) => prev + 1);
+  }
 
   const gradient = weather.data
     ? getGradient(
-      getWMO(weather.data.current.weather_code).condition,
-      weather.data.daily.sunrise[0],
-      weather.data.daily.sunset[0],
-    )
+        getWMO(weather.data.current.weather_code).condition,
+        weather.data.daily.sunrise[0],
+        weather.data.daily.sunset[0],
+      )
     : NIGHT_GRADIENT;
 
   useEffect(() => {
@@ -53,32 +59,37 @@ export default function HomeScreen() {
           {location.loading || weather.loading ? (
             <View style={{ alignItems: 'center', paddingVertical: 80 }}>
               <ActivityIndicator size="large" color="white" />
-              <Text className="text-white/60 mt-4">Fetching your weather...</Text>
+              <Text className="mt-4 text-white/60">Fetching your weather...</Text>
             </View>
           ) : location.error ? (
             <View style={{ alignItems: 'center', paddingVertical: 80 }}>
-              <Text className="text-white text-center">{location.error}</Text>
-              <TouchableOpacity onPress={handleRefresh} className="m-2 border border-white rounded-md px-4 py-2">
+              <Text className="text-center text-white">{location.error}</Text>
+              <TouchableOpacity
+                onPress={handleRefresh}
+                className="m-2 rounded-md border border-white px-4 py-2"
+              >
                 <Text className="text-white">Try Again</Text>
               </TouchableOpacity>
             </View>
           ) : weather.error ? (
             <View style={{ alignItems: 'center', paddingVertical: 80 }}>
-              <Text className="text-white text-center">{weather.error}</Text>
-              <TouchableOpacity onPress={handleRefresh} className="m-2 border border-white rounded-md px-4 py-2">
+              <Text className="text-center text-white">{weather.error}</Text>
+              <TouchableOpacity
+                onPress={handleRefresh}
+                className="m-2 rounded-md border border-white px-4 py-2"
+              >
                 <Text className="text-white">Try Again</Text>
               </TouchableOpacity>
             </View>
           ) : weather.data ? (
             <View style={{ gap: 16 }}>
               <CurrentWeather data={weather.data.current} cityName={location.cityName ?? ''} />
-              <WeatherStats 
+              <WeatherStats
                 data={weather.data.current}
                 sunrise={weather.data.daily.sunrise[0]}
                 sunset={weather.data.daily.sunset[0]}
               />
               <HourlyForecast data={weather.data.hourly} />
-              <DailyForecast data={weather.data.daily} />
             </View>
           ) : null}
         </ScrollView>
