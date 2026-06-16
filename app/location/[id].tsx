@@ -8,7 +8,7 @@ import { CurrentWeather } from '../../components/CurrentWeather';
 import { DailyForecast } from '../../components/DailyForecast';
 import { HourlyForecast } from '../../components/HourlyForecast';
 import { WeatherStats } from '../../components/WeatherStats';
-import { CONDITION_GRADIENTS, NIGHT_GRADIENT } from '../../constants/theme';
+import { getGradient, NIGHT_GRADIENT } from '../../constants/theme';
 import { getWMO } from '../../constants/wmo';
 import { useWeather } from '../../hooks/useWeather';
 
@@ -32,7 +32,11 @@ export default function LocationScreen() {
   };
 
   const gradient = weather.data
-    ? CONDITION_GRADIENTS[getWMO(weather.data.current.weather_code).condition]
+    ? getGradient(
+      getWMO(weather.data.current.weather_code).condition,
+      weather.data.daily.sunrise[0],
+      weather.data.daily.sunset[0],
+    )
     : NIGHT_GRADIENT;
 
   useEffect(() => {
@@ -72,7 +76,11 @@ export default function LocationScreen() {
           ) : weather.data ? (
             <View style={{ gap: 16, marginTop: 8 }}>
               <CurrentWeather data={weather.data.current} cityName={name ?? ''} />
-              <WeatherStats data={weather.data.current} />
+              <WeatherStats 
+                data={weather.data.current} 
+                sunrise={weather.data.daily.sunrise[0]}
+                sunset={weather.data.daily.sunset[0]}
+              />
               <HourlyForecast data={weather.data.hourly} />
               <DailyForecast data={weather.data.daily} />
             </View>

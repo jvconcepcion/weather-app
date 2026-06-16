@@ -10,3 +10,16 @@ export const CONDITION_GRADIENTS: Record<WMOCondition, [string, string]> = {
 };
 
 export const NIGHT_GRADIENT: [string, string] = ['#0f0c29', '#302b63'];
+
+export function getGradient(
+  condition: WMOCondition,
+  sunrise: string,
+  sunset: string,
+) : [string, string] {
+  const now = new Date();
+  const sunriseTime = new Date(sunrise);
+  const sunsetTime = new Date(sunset);
+  const isNight = now < sunriseTime || now > sunsetTime;
+  
+  return isNight ? NIGHT_GRADIENT : CONDITION_GRADIENTS[condition];
+};
