@@ -25,7 +25,7 @@ export function useLocation(): LocationState {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         if (!cancelled) {
-          setState(prev => ({ ...prev, error: 'Location permission denied', loading: false }));
+          setState((prev) => ({ ...prev, error: 'Location permission denied', loading: false }));
         }
         return;
       }
@@ -44,9 +44,9 @@ export function useLocation(): LocationState {
       }
     }
 
-    getLocation().catch(err => {
+    getLocation().catch((err) => {
       if (!cancelled) {
-        setState(prev => ({ ...prev, error: String(err), loading: false }));
+        setState((prev) => ({ ...prev, error: String(err), loading: false }));
       }
     });
 
