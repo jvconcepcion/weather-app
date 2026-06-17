@@ -35,10 +35,7 @@ export type WeatherResponse = {
   daily: DailyWeather;
 };
 
-export async function fetchWeather(
-  latitude: number,
-  longitude: number,
-): Promise<WeatherResponse> {
+export async function fetchWeather(latitude: number, longitude: number): Promise<WeatherResponse> {
   const params = new URLSearchParams({
     latitude: String(latitude),
     longitude: String(longitude),

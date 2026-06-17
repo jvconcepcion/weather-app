@@ -22,6 +22,6 @@ export async function searchLocations(query: string): Promise<GeocodingResult[]>
 
   const response = await fetch(`${BASE_URL}?${params}`);
   if (!response.ok) throw new Error(`Geocoding API error: ${response.status}`);
-  const data = await response.json() as { results?: GeocodingResult[] };
+  const data = (await response.json()) as { results?: GeocodingResult[] };
   return data.results ?? [];
 }

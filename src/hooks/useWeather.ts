@@ -7,7 +7,11 @@ export type WeatherState = {
   error: string | null;
 };
 
-export function useWeather(latitude: number | null, longitude: number | null, refreshKey: number): WeatherState {
+export function useWeather(
+  latitude: number | null,
+  longitude: number | null,
+  refreshKey: number,
+): WeatherState {
   const [state, setState] = useState<WeatherState>({
     data: null,
     loading: false,
@@ -21,10 +25,10 @@ export function useWeather(latitude: number | null, longitude: number | null, re
     setState({ data: null, loading: true, error: null });
 
     fetchWeather(latitude, longitude)
-      .then(data => {
+      .then((data) => {
         if (!cancelled) setState({ data, loading: false, error: null });
       })
-      .catch(err => {
+      .catch((err) => {
         if (!cancelled) setState({ data: null, loading: false, error: String(err) });
       });
 

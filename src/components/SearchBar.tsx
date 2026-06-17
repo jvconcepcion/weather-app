@@ -46,10 +46,10 @@ export function SearchBar() {
 
   return (
     <View className="relative z-10">
-      <View className="flex-row items-center bg-white/15 border border-white/25 rounded-2xl px-4 h-12">
+      <View className="h-12 flex-row items-center rounded-2xl border border-white/25 bg-white/15 px-4">
         <MaterialCommunityIcons name="magnify" size={20} color="rgba(255,255,255,0.7)" />
         <TextInput
-          className="flex-1 ml-2 text-white text-base"
+          className="ml-2 flex-1 text-base text-white"
           placeholder="Search city..."
           placeholderTextColor="rgba(255,255,255,0.5)"
           value={query}
@@ -60,17 +60,21 @@ export function SearchBar() {
       </View>
 
       {results.length > 0 && (
-        <View className="absolute top-14 left-0 right-0 bg-[#1a1a3e] border border-white/20 rounded-2xl overflow-hidden">
+        <View className="absolute left-0 right-0 top-14 overflow-hidden rounded-2xl border border-white/20 bg-[#1a1a3e]">
           {results.map((item, index) => (
             <TouchableOpacity
               key={String(item.id)}
               className={`flex-row items-center px-4 py-3 ${index < results.length - 1 ? 'border-b border-white/10' : ''}`}
               onPress={() => handleSelect(item)}
             >
-              <MaterialCommunityIcons name="map-marker-outline" size={18} color="rgba(255,255,255,0.6)" />
+              <MaterialCommunityIcons
+                name="map-marker-outline"
+                size={18}
+                color="rgba(255,255,255,0.6)"
+              />
               <View className="ml-3">
-                <Text className="text-white font-medium">{item.name}</Text>
-                <Text className="text-white/60 text-sm">
+                <Text className="font-medium text-white">{item.name}</Text>
+                <Text className="text-sm text-white/60">
                   {[item.admin1, item.country].filter(Boolean).join(', ')}
                 </Text>
               </View>

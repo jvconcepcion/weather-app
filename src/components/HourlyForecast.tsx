@@ -18,7 +18,7 @@ function formatHour(timeStr: string): string {
 
 export function HourlyForecast({ data }: HourlyForecastProps) {
   const nowHour = new Date().getHours();
-  const startIndex = data.time.findIndex(t => {
+  const startIndex = data.time.findIndex((t) => {
     const h = parseInt(t.split('T')[1]?.split(':')[0] ?? '0', 10);
     return h >= nowHour;
   });
@@ -27,16 +27,16 @@ export function HourlyForecast({ data }: HourlyForecastProps) {
 
   return (
     <GlassCard className="p-3">
-      <Text className="text-white/70 text-sm font-medium mb-3 px-1">Hourly Forecast</Text>
+      <Text className="mb-3 px-1 text-sm font-medium text-white/70">Hourly Forecast</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {hours.map((time, i) => {
           const index = from + i;
           const wmo = getWMO(data.weather_code[index]);
           return (
-            <View key={time} className="items-center mx-3">
-              <Text className="text-white/60 text-xs mb-2">{formatHour(time)}</Text>
+            <View key={time} className="mx-3 items-center">
+              <Text className="mb-2 text-xs text-white/60">{formatHour(time)}</Text>
               <MaterialCommunityIcons name={wmo.icon as any} size={24} color="white" />
-              <Text className="text-white font-semibold mt-2 text-sm">
+              <Text className="mt-2 text-sm font-semibold text-white">
                 {Math.round(data.temperature_2m[index])}°
               </Text>
             </View>
