@@ -1,13 +1,7 @@
+import { WeatherSkeleton } from '@/components/WeatherSkeleton';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
-import {
-  ActivityIndicator,
-  RefreshControl,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { RefreshControl, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CurrentWeather } from '../components/CurrentWeather';
 import { DailyForecast } from '../components/DailyForecast';
@@ -58,10 +52,7 @@ export default function HomeScreen() {
           </View>
 
           {location.loading || weather.loading ? (
-            <View style={{ alignItems: 'center', paddingVertical: 80 }}>
-              <ActivityIndicator size="large" color="white" />
-              <Text className="mt-4 text-white/60">Fetching your weather...</Text>
-            </View>
+            <WeatherSkeleton />
           ) : location.error ? (
             <View style={{ alignItems: 'center', paddingVertical: 80 }}>
               <Text className="text-center text-white">{location.error}</Text>
