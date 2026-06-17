@@ -1,15 +1,9 @@
+import { WeatherSkeleton } from '@/components/WeatherSkeleton';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import {
-  ActivityIndicator,
-  RefreshControl,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { RefreshControl, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CurrentWeather } from '../../components/CurrentWeather';
 import { DailyForecast } from '../../components/DailyForecast';
@@ -76,10 +70,7 @@ export default function LocationScreen() {
           }
         >
           {weather.loading ? (
-            <View style={{ alignItems: 'center', paddingVertical: 80 }}>
-              <ActivityIndicator size="large" color="white" />
-              <Text className="mt-4 text-white/60">Fetching weather...</Text>
-            </View>
+            <WeatherSkeleton />
           ) : weather.error ? (
             <View style={{ alignItems: 'center', paddingVertical: 80 }}>
               <Text className="text-center text-white">{weather.error}</Text>
