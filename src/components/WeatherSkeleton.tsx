@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
-import { Animated, Easing, View } from 'react-native';
+import { usePulseAnimation } from '@/hooks/usePulseAnimation';
+import { Animated, View } from 'react-native';
 
 interface WeatherSkeletonProps {
   showHeader?: boolean;
@@ -16,30 +16,7 @@ function RowSkeleton({ count }: { count: number }) {
 }
 
 export function WeatherSkeleton({ showHeader = false }: WeatherSkeletonProps) {
-  const pulse = useRef(new Animated.Value(0.45)).current;
-
-  useEffect(() => {
-    const animation = Animated.loop(
-      Animated.sequence([
-        Animated.timing(pulse, {
-          toValue: 0.8,
-          duration: 800,
-          easing: Easing.ease,
-          useNativeDriver: true,
-        }),
-        Animated.timing(pulse, {
-          toValue: 0.45,
-          duration: 800,
-          easing: Easing.ease,
-          useNativeDriver: true,
-        }),
-      ]),
-    );
-
-    animation.start();
-
-    return () => animation.stop();
-  }, [pulse]);
+  const pulse = usePulseAnimation();
 
   return (
     <Animated.View style={{ gap: 16, opacity: pulse }}>
