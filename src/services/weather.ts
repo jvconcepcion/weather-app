@@ -35,7 +35,11 @@ export type WeatherResponse = {
   daily: DailyWeather;
 };
 
-export async function fetchWeather(latitude: number, longitude: number): Promise<WeatherResponse> {
+export async function fetchWeather(
+  latitude: number,
+  longitude: number,
+  unit: 'celsius' | 'fahrenheit' = 'celsius',
+): Promise<WeatherResponse> {
   const params = new URLSearchParams({
     latitude: String(latitude),
     longitude: String(longitude),
@@ -62,6 +66,7 @@ export async function fetchWeather(latitude: number, longitude: number): Promise
     ].join(','),
     timezone: 'auto',
     forecast_days: '8',
+    temperature_unit: unit,
   });
 
   const response = await fetch(`${BASE_URL}?${params}`);
