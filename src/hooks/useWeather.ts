@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { fetchWeather, type WeatherResponse } from '../services/weather';
+import { useAppStore } from '../store/useAppStore';
 
 export type WeatherState = {
   data: WeatherResponse | null;
@@ -18,13 +19,15 @@ export function useWeather(
     error: null,
   });
 
+  const unit = useAppStore((state) => state.unit);
+
   useEffect(() => {
     if (latitude === null || longitude === null) return;
 
     let cancelled = false;
     setState({ data: null, loading: true, error: null });
 
-    fetchWeather(latitude, longitude)
+    fetchWeather(latitude, longitude, unit)
       .then((data) => {
         if (!cancelled) setState({ data, loading: false, error: null });
       })
@@ -35,7 +38,7 @@ export function useWeather(
     return () => {
       cancelled = true;
     };
-  }, [latitude, longitude, refreshKey]);
+  }, [latitude, longitude, refreshKey, unit]);
 
   return state;
 }
