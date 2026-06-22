@@ -12,12 +12,19 @@ import { getGradient, NIGHT_GRADIENT } from '../constants/theme';
 import { getWMO } from '../constants/wmo';
 import { useLocation } from '../hooks/useLocation';
 import { useWeather } from '../hooks/useWeather';
+import { useAppStore } from '../store/useAppStore';
 
 export default function HomeScreen() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const location = useLocation();
   const weather = useWeather(location.latitude, location.longitude, refreshKey);
+  const unit = useAppStore((state) => state.unit);
+  const setUnit = useAppStore((state) => state.setUnit);
+
+  const handleToggleUnit = () => {
+    setUnit(unit === 'celsius' ? 'fahrenheit' : 'celsius');
+  };
 
   async function handleRefresh() {
     setIsRefreshing(true);
@@ -47,8 +54,25 @@ export default function HomeScreen() {
             <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} tintColor="white" />
           }
         >
-          <View style={{ marginTop: 16, marginBottom: 24 }}>
-            <SearchBar />
+          <View
+            style={{
+              marginTop: 16,
+              marginBottom: 24,
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 8,
+            }}
+          >
+            <View style={{ flex: 1 }}>
+              <SearchBar />
+            </View>
+
+            <TouchableOpacity
+              onPress={handleToggleUnit}
+              className="h-12 items-center justify-center rounded-2xl border border-white/25 bg-white/15 px-4"
+            >
+              <Text className="font-medium text-white">{unit === 'celsius' ? '°C' : '°F'}</Text>
+            </TouchableOpacity>
           </View>
 
           {location.loading || weather.loading ? (
