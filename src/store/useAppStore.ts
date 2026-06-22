@@ -1,4 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 export type Unit = 'celsius' | 'fahrenheit';
 
@@ -23,32 +25,40 @@ interface AppStore {
   clearRecentSearches: () => void;
 }
 
-export const useAppStore = create<AppStore>((set) => ({
-  unit: 'celsius',
-  favorites: [],
-  recentSearches: [],
+export const useAppStore = create<AppStore>()(
+  persist(
+    (set) => ({
+      unit: 'celsius',
+      favorites: [],
+      recentSearches: [],
 
-  setUnit: (unit) => set({ unit }),
+      setUnit: (unit) => set({ unit }),
 
-  addFavorite: (city) =>
-    set((state) => {
-      const alreadyExists = state.favorites.some((fav) => fav.id === city.id);
-      if (alreadyExists) return state;
+      addFavorite: (city) =>
+        set((state) => {
+          const alreadyExists = state.favorites.some((fav) => fav.id === city.id);
+          if (alreadyExists) return state;
 
-      return { favorites: [...state.favorites, city] };
+          return { favorites: [...state.favorites, city] };
+        }),
+
+      removeFavorite: (cityId) =>
+        set((state) => ({
+          favorites: state.favorites.filter((city) => city.id !== cityId),
+        })),
+
+      addRecentSearch: (city) =>
+        set((state) => {
+          const filtered = state.recentSearches.filter((item) => item.id !== city.id);
+
+          return { recentSearches: [city, ...filtered].slice(0, 5) };
+        }),
+
+      clearRecentSearches: () => set({ recentSearches: [] }),
     }),
-
-  removeFavorite: (cityId) =>
-    set((state) => ({
-      favorites: state.favorites.filter((city) => city.id !== cityId),
-    })),
-
-  addRecentSearch: (city) =>
-    set((state) => {
-      const filtered = state.recentSearches.filter((item) => item.id !== city.id);
-
-      return { recentSearches: [city, ...filtered].slice(0, 5) };
-    }),
-
-  clearRecentSearches: () => set({ recentSearches: [] }),
-}));
+    {
+      name: 'app-storage',
+      storage: createJSONStorage(() => AsyncStorage),
+    },
+  ),
+);
