@@ -11,6 +11,7 @@ import { WeatherStats } from '../components/WeatherStats';
 import { getGradient, NIGHT_GRADIENT } from '../constants/theme';
 import { getWMO } from '../constants/wmo';
 import { useLocation } from '../hooks/useLocation';
+import { useNetworkStatus } from '../hooks/useNetworkStatus';
 import { useWeather } from '../hooks/useWeather';
 import { useAppStore } from '../store/useAppStore';
 
@@ -21,6 +22,7 @@ export default function HomeScreen() {
   const weather = useWeather(location.latitude, location.longitude, refreshKey);
   const unit = useAppStore((state) => state.unit);
   const setUnit = useAppStore((state) => state.setUnit);
+  const isConnected = useNetworkStatus();
 
   const handleToggleUnit = () => {
     setUnit(unit === 'celsius' ? 'fahrenheit' : 'celsius');
@@ -74,6 +76,16 @@ export default function HomeScreen() {
               <Text className="font-medium text-white">{unit === 'celsius' ? '°C' : '°F'}</Text>
             </TouchableOpacity>
           </View>
+
+          {!isConnected && (
+            <View className="mb-4 flex-row items-center rounded-2xl border border-white/20 bg-black/20 px-4 py-3">
+              <View className="mr-3 h-2.5 w-2.5 rounded-full bg-yellow-300" />
+              <Text className="flex-1 text-sm text-white">
+                No internet connection.{' '}
+                <Text className="text-white/80">Showing the last saved weather update.</Text>
+              </Text>
+            </View>
+          )}
 
           {location.loading || weather.loading ? (
             <WeatherSkeleton />
