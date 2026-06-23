@@ -1,5 +1,7 @@
 import { WeatherSkeleton } from '@/components/WeatherSkeleton';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { RefreshControl, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -22,6 +24,8 @@ export default function HomeScreen() {
   const weather = useWeather(location.latitude, location.longitude, refreshKey);
   const unit = useAppStore((state) => state.unit);
   const setUnit = useAppStore((state) => state.setUnit);
+  const recentSearches = useAppStore((state) => state.recentSearches);
+  const clearRecentSearches = useAppStore((state) => state.clearRecentSearches);
   const isConnected = useNetworkStatus();
 
   const handleToggleUnit = () => {
@@ -31,6 +35,18 @@ export default function HomeScreen() {
   async function handleRefresh() {
     setIsRefreshing(true);
     setRefreshKey((prev) => prev + 1);
+  }
+
+  function handleRecentPress(city: { id: number; name: string; lat: number; lon: number }) {
+    router.push({
+      pathname: '/location/[id]',
+      params: {
+        id: String(city.id),
+        name: city.name,
+        lat: String(city.lat),
+        lon: String(city.lon),
+      },
+    });
   }
 
   const gradient = weather.data
@@ -76,6 +92,77 @@ export default function HomeScreen() {
               <Text className="font-medium text-white">{unit === 'celsius' ? '°C' : '°F'}</Text>
             </TouchableOpacity>
           </View>
+
+          {recentSearches.length > 0 && (
+            <View style={{ marginBottom: 20 }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: 10,
+                }}
+              >
+                <Text style={{ color: 'white', fontSize: 16, fontWeight: '600' }}>
+                  Recent Searches
+                </Text>
+                <TouchableOpacity
+                  onPress={clearRecentSearches}
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 6,
+                    paddingHorizontal: 10,
+                    paddingVertical: 6,
+                    borderRadius: 999,
+                    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                    borderWidth: 1,
+                    borderColor: 'rgba(255, 255, 255, 0.12)',
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    name="delete-outline"
+                    size={14}
+                    color="rgba(255, 255, 255, 0.85)"
+                  />
+                  <Text
+                    style={{
+                      color: 'rgba(255, 255, 255, 0.85)',
+                      fontSize: 12,
+                      fontWeight: '600',
+                    }}
+                  >
+                    Clear
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{ gap: 8 }}
+              >
+                {recentSearches.map((city) => (
+                  <TouchableOpacity
+                    key={city.id}
+                    onPress={() => handleRecentPress(city)}
+                    style={{
+                      paddingHorizontal: 14,
+                      paddingVertical: 10,
+                      borderRadius: 999,
+                      backgroundColor: 'rgba(255, 255, 255, 0.14)',
+                      borderWidth: 1,
+                      borderColor: 'rgba(255, 255, 255, 0.18)',
+                    }}
+                  >
+                    <Text style={{ color: 'white', fontSize: 14, fontWeight: '500' }}>
+                      {city.name}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
+          )}
 
           {!isConnected && (
             <View className="mb-4 flex-row items-center rounded-2xl border border-white/20 bg-black/20 px-4 py-3">

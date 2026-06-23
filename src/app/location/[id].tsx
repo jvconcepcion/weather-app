@@ -12,13 +12,20 @@ import { WeatherStats } from '../../components/WeatherStats';
 import { getGradient, NIGHT_GRADIENT } from '../../constants/theme';
 import { getWMO } from '../../constants/wmo';
 import { useWeather } from '../../hooks/useWeather';
+import { useAppStore, type City } from '../../store/useAppStore';
 
 export default function LocationScreen() {
   const router = useRouter();
+  const addRecentSearch = useAppStore((state) => state.addRecentSearch);
   const [refreshKey, setRefreshKey] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const { name, lat, lon } = useLocalSearchParams<{ name: string; lat: string; lon: string }>();
+  const { id, name, lat, lon } = useLocalSearchParams<{
+    id: string;
+    name: string;
+    lat: string;
+    lon: string;
+  }>();
   const latitude = parseFloat(lat ?? '');
   const longitude = parseFloat(lon ?? '');
   const weather = useWeather(
@@ -45,6 +52,21 @@ export default function LocationScreen() {
       setIsRefreshing(false);
     }
   }, [weather.loading]);
+
+  useEffect(() => {
+    if (weather.loading) return;
+    if (!id || !name || Number.isNaN(latitude) || Number.isNaN(longitude)) return;
+
+    const cityId = Number(id);
+    if (Number.isNaN(cityId)) return;
+
+    addRecentSearch({
+      id: cityId,
+      name,
+      lat: latitude,
+      lon: longitude,
+    } satisfies City);
+  }, [weather.loading, id, name, latitude, longitude, addRecentSearch]);
 
   return (
     <LinearGradient colors={gradient} style={{ flex: 1 }}>
