@@ -11,26 +11,37 @@ export interface City {
   lon: number;
 }
 
+export interface CachedWeatherEntry {
+  data: unknown;
+  unit: Unit;
+  timestamp: number;
+}
+
+export const getWeatherCacheKey = (lat: number, lon: number) => `${lat}|${lon}`;
+
 interface AppStore {
   unit: Unit;
   favorites: City[];
   recentSearches: City[];
+  weatherCache: Record<string, CachedWeatherEntry>;
 
   setUnit: (unit: Unit) => void;
-
   addFavorite: (city: City) => void;
   removeFavorite: (cityId: number) => void;
-
   addRecentSearch: (city: City) => void;
   clearRecentSearches: () => void;
+
+  setWeatherCache: (key: string, entry: CachedWeatherEntry) => void;
+  getWeatherCache: (key: string) => CachedWeatherEntry | undefined;
 }
 
 export const useAppStore = create<AppStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       unit: 'celsius',
       favorites: [],
       recentSearches: [],
+      weatherCache: {},
 
       setUnit: (unit) => set({ unit }),
 
@@ -55,6 +66,16 @@ export const useAppStore = create<AppStore>()(
         }),
 
       clearRecentSearches: () => set({ recentSearches: [] }),
+
+      setWeatherCache: (key, entry) =>
+        set((state) => ({
+          weatherCache: {
+            ...state.weatherCache,
+            [key]: entry,
+          },
+        })),
+
+      getWeatherCache: (key) => get().weatherCache[key],
     }),
     {
       name: 'app-storage',

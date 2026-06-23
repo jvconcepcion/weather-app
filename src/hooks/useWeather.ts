@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { fetchWeather, type WeatherResponse } from '../services/weather';
-import { useAppStore } from '../store/useAppStore';
+import { getWeatherCacheKey, useAppStore } from '../store/useAppStore';
 
 export type WeatherState = {
   data: WeatherResponse | null;
@@ -25,14 +25,53 @@ export function useWeather(
     if (latitude === null || longitude === null) return;
 
     let cancelled = false;
-    setState({ data: null, loading: true, error: null });
+
+    const cacheKey = getWeatherCacheKey(latitude, longitude);
+    const { getWeatherCache, setWeatherCache } = useAppStore.getState();
+
+    const cached = getWeatherCache(cacheKey);
+    const hasMatchingCache = cached && cached.unit === unit;
+
+    setState({
+      data: hasMatchingCache ? (cached.data as WeatherResponse) : null,
+      loading: true,
+      error: null,
+    });
 
     fetchWeather(latitude, longitude, unit)
       .then((data) => {
-        if (!cancelled) setState({ data, loading: false, error: null });
+        if (cancelled) return;
+
+        setWeatherCache(cacheKey, {
+          data,
+          unit,
+          timestamp: Date.now(),
+        });
+
+        setState({
+          data,
+          loading: false,
+          error: null,
+        });
       })
       .catch((err) => {
-        if (!cancelled) setState({ data: null, loading: false, error: String(err) });
+        if (cancelled) return;
+
+        // Fall back to any cached data for this location
+        if (cached) {
+          setState({
+            data: cached.data as WeatherResponse,
+            loading: false,
+            error: null,
+          });
+          return;
+        }
+
+        setState({
+          data: null,
+          loading: false,
+          error: String(err),
+        });
       });
 
     return () => {
