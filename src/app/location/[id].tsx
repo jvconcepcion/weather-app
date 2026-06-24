@@ -28,24 +28,31 @@ export default function LocationScreen() {
   }>();
   const latitude = parseFloat(lat ?? '');
   const longitude = parseFloat(lon ?? '');
+  const cityId = Number(id);
+  const parsedLat = Number(latitude);
+  const parsedLon = Number(longitude);
+
+  const isInvalidLocation =
+    Number.isNaN(cityId) || !Number.isFinite(parsedLat) || !Number.isFinite(parsedLon);
+
   const weather = useWeather(
-    isNaN(latitude) ? null : latitude,
-    isNaN(longitude) ? null : longitude,
+    isInvalidLocation ? null : parsedLat,
+    isInvalidLocation ? null : parsedLon,
     refreshKey,
   );
+  const weatherCode = weather.data?.current?.weather_code ?? 0;
+  const sunrise = weather.data?.daily?.sunrise?.[0];
+  const sunset = weather.data?.daily?.sunset?.[0];
 
   async function handleRefresh() {
     setIsRefreshing(true);
     setRefreshKey((prev) => prev + 1);
   }
 
-  const gradient = weather.data
-    ? getGradient(
-        getWMO(weather.data.current.weather_code).condition,
-        weather.data.daily.sunrise[0],
-        weather.data.daily.sunset[0],
-      )
-    : NIGHT_GRADIENT;
+  const gradient =
+    weather.data && sunrise && sunset
+      ? getGradient(getWMO(weatherCode).condition, sunrise, sunset)
+      : NIGHT_GRADIENT;
 
   useEffect(() => {
     if (!weather.loading) {
@@ -54,19 +61,48 @@ export default function LocationScreen() {
   }, [weather.loading]);
 
   useEffect(() => {
-    if (weather.loading) return;
-    if (!id || !name || Number.isNaN(latitude) || Number.isNaN(longitude)) return;
-
-    const cityId = Number(id);
-    if (Number.isNaN(cityId)) return;
+    if (weather.loading || isInvalidLocation) return;
 
     addRecentSearch({
       id: cityId,
       name,
-      lat: latitude,
-      lon: longitude,
+      lat: parsedLat,
+      lon: parsedLon,
     } satisfies City);
-  }, [weather.loading, id, name, latitude, longitude, addRecentSearch]);
+  }, [weather.loading, isInvalidLocation, cityId, name, parsedLat, parsedLon, addRecentSearch]);
+
+  if (isInvalidLocation) {
+    return (
+      <LinearGradient colors={NIGHT_GRADIENT} style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingHorizontal: 20,
+              paddingTop: 12,
+            }}
+          >
+            <TouchableOpacity onPress={() => router.back()}>
+              <MaterialCommunityIcons name="arrow-left" size={28} color="white" />
+            </TouchableOpacity>
+            <Text className="ml-4 text-lg font-semibold text-white">Location</Text>
+          </View>
+
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingHorizontal: 24,
+            }}
+          >
+            <Text className="text-center text-white">Location not found</Text>
+          </View>
+        </SafeAreaView>
+      </LinearGradient>
+    );
+  }
 
   return (
     <LinearGradient colors={gradient} style={{ flex: 1 }}>

@@ -18,10 +18,24 @@ function formatHour(timeStr: string): string {
 
 export function HourlyForecast({ data }: HourlyForecastProps) {
   const nowHour = new Date().getHours();
+  const hasHourlyData = Array.isArray(data.time) && data.time.length > 0;
+
+  if (!hasHourlyData) {
+    return (
+      <GlassCard className="p-3">
+        <Text className="mb-3 px-1 text-sm font-medium text-white/70">Hourly Forecast</Text>
+
+        <View className="items-center py-6">
+          <Text className="text-sm text-white/60">No forecast available</Text>
+        </View>
+      </GlassCard>
+    );
+  }
   const startIndex = data.time.findIndex((t) => {
     const h = parseInt(t.split('T')[1]?.split(':')[0] ?? '0', 10);
     return h >= nowHour;
   });
+
   const from = startIndex >= 0 ? startIndex : 0;
   const hours = data.time.slice(from, from + 24);
 
