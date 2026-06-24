@@ -26,6 +26,7 @@ export default function HomeScreen() {
   const setUnit = useAppStore((state) => state.setUnit);
   const recentSearches = useAppStore((state) => state.recentSearches);
   const clearRecentSearches = useAppStore((state) => state.clearRecentSearches);
+  const removeRecentSearch = useAppStore((state) => state.removeRecentSearch);
   const isConnected = useNetworkStatus();
 
   const handleToggleUnit = () => {
@@ -143,22 +144,48 @@ export default function HomeScreen() {
                 contentContainerStyle={{ gap: 8 }}
               >
                 {recentSearches.map((city) => (
-                  <TouchableOpacity
+                  <View
                     key={city.id}
-                    onPress={() => handleRecentPress(city)}
                     style={{
-                      paddingHorizontal: 14,
-                      paddingVertical: 10,
+                      flexDirection: 'row',
+                      alignItems: 'center',
                       borderRadius: 999,
                       backgroundColor: 'rgba(255, 255, 255, 0.14)',
                       borderWidth: 1,
                       borderColor: 'rgba(255, 255, 255, 0.18)',
+                      overflow: 'hidden',
                     }}
                   >
-                    <Text style={{ color: 'white', fontSize: 14, fontWeight: '500' }}>
-                      {city.name}
-                    </Text>
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleRecentPress(city)}
+                      style={{
+                        paddingLeft: 14,
+                        paddingRight: 7,
+                        paddingVertical: 10,
+                      }}
+                    >
+                      <Text style={{ color: 'white', fontSize: 14, fontWeight: '500' }}>
+                        {city.name}
+                      </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      onPress={() => removeRecentSearch(city.id)}
+                      style={{
+                        paddingLeft: 6,
+                        paddingRight: 12,
+                        paddingVertical: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <MaterialCommunityIcons
+                        name="close"
+                        size={14}
+                        color="rgba(255, 255, 255, 0.85)"
+                      />
+                    </TouchableOpacity>
+                  </View>
                 ))}
               </ScrollView>
             </View>
