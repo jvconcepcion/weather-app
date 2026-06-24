@@ -29,6 +29,7 @@ interface AppStore {
   addFavorite: (city: City) => void;
   removeFavorite: (cityId: number) => void;
   addRecentSearch: (city: City) => void;
+  removeRecentSearch: (cityId: number) => void;
   clearRecentSearches: () => void;
 
   setWeatherCache: (key: string, entry: CachedWeatherEntry) => void;
@@ -64,6 +65,11 @@ export const useAppStore = create<AppStore>()(
 
           return { recentSearches: [city, ...filtered].slice(0, 5) };
         }),
+
+      removeRecentSearch: (cityId) =>
+        set((state) => ({
+          recentSearches: state.recentSearches.filter((city) => city.id !== cityId),
+        })),
 
       clearRecentSearches: () => set({ recentSearches: [] }),
 
