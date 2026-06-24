@@ -5,6 +5,7 @@ import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { RefreshControl, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Chip } from '../components/Chip';
 import { CurrentWeather } from '../components/CurrentWeather';
 import { DailyForecast } from '../components/DailyForecast';
 import { HourlyForecast } from '../components/HourlyForecast';
@@ -144,48 +145,12 @@ export default function HomeScreen() {
                 contentContainerStyle={{ gap: 8 }}
               >
                 {recentSearches.map((city) => (
-                  <View
-                    key={city.id}
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      borderRadius: 999,
-                      backgroundColor: 'rgba(255, 255, 255, 0.14)',
-                      borderWidth: 1,
-                      borderColor: 'rgba(255, 255, 255, 0.18)',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => handleRecentPress(city)}
-                      style={{
-                        paddingLeft: 14,
-                        paddingRight: 7,
-                        paddingVertical: 10,
-                      }}
-                    >
-                      <Text style={{ color: 'white', fontSize: 14, fontWeight: '500' }}>
-                        {city.name}
-                      </Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      onPress={() => removeRecentSearch(city.id)}
-                      style={{
-                        paddingLeft: 6,
-                        paddingRight: 12,
-                        paddingVertical: 10,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <MaterialCommunityIcons
-                        name="close"
-                        size={14}
-                        color="rgba(255, 255, 255, 0.85)"
-                      />
-                    </TouchableOpacity>
-                  </View>
+                  <Chip
+                    key={String(city.id)}
+                    title={city.name}
+                    onPress={() => handleRecentPress(city)}
+                    onActionPress={() => removeRecentSearch(city.id)}
+                  />
                 ))}
               </ScrollView>
             </View>
