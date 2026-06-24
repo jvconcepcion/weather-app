@@ -11,6 +11,19 @@ interface DailyForecastProps {
 }
 
 export function DailyForecast({ data }: DailyForecastProps) {
+  const hasDailyData = Array.isArray(data.time) && data.time.length > 0;
+
+  if (!hasDailyData) {
+    return (
+      <GlassCard>
+        <Text className="mb-1 text-sm font-medium text-white/70">8-Day Forecast</Text>
+
+        <View className="items-center py-6">
+          <Text className="text-sm text-white/60">No forecast available</Text>
+        </View>
+      </GlassCard>
+    );
+  }
   return (
     <GlassCard>
       <Text className="mb-1 text-sm font-medium text-white/70">8-Day Forecast</Text>

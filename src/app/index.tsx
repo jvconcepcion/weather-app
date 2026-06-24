@@ -30,6 +30,10 @@ export default function HomeScreen() {
   const removeRecentSearch = useAppStore((state) => state.removeRecentSearch);
   const isConnected = useNetworkStatus();
 
+  const weatherCode = weather.data?.current?.weather_code ?? 0;
+  const sunrise = weather.data?.daily?.sunrise?.[0];
+  const sunset = weather.data?.daily?.sunset?.[0];
+
   const handleToggleUnit = () => {
     setUnit(unit === 'celsius' ? 'fahrenheit' : 'celsius');
   };
@@ -51,13 +55,10 @@ export default function HomeScreen() {
     });
   }
 
-  const gradient = weather.data
-    ? getGradient(
-        getWMO(weather.data.current.weather_code).condition,
-        weather.data.daily.sunrise[0],
-        weather.data.daily.sunset[0],
-      )
-    : NIGHT_GRADIENT;
+  const gradient =
+    weather.data && sunrise && sunset
+      ? getGradient(getWMO(weatherCode).condition, sunrise, sunset)
+      : NIGHT_GRADIENT;
 
   useEffect(() => {
     if (!weather.loading) {
@@ -190,11 +191,14 @@ export default function HomeScreen() {
             </View>
           ) : weather.data ? (
             <View style={{ gap: 16 }}>
-              <CurrentWeather data={weather.data.current} cityName={location.cityName ?? ''} />
+              <CurrentWeather
+                data={weather.data.current}
+                cityName={location.cityName || 'Current location'}
+              />
               <WeatherStats
                 data={weather.data.current}
-                sunrise={weather.data.daily.sunrise[0]}
-                sunset={weather.data.daily.sunset[0]}
+                sunrise={weather.data.daily?.sunrise?.[0]}
+                sunset={weather.data.daily?.sunset?.[0]}
               />
               <HourlyForecast data={weather.data.hourly} />
               <DailyForecast data={weather.data.daily} />

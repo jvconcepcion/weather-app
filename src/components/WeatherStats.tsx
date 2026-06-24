@@ -9,8 +9,8 @@ interface WeatherStatsProps {
   sunset?: string;
 }
 
-const getWindDirection = (degrees?: number) => {
-  if (degrees == null) return '';
+const getWindDirection = (degrees?: number | null) => {
+  if (typeof degrees !== 'number' || !Number.isFinite(degrees)) return '';
 
   const DIRECTIONS = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
   const index = Math.round(degrees / 45) % 8;
@@ -22,33 +22,40 @@ const STATS = [
     key: 'relative_humidity_2m',
     icon: 'water-percent',
     label: 'Humidity',
-    format: (v: number) => `${v}%`,
+    format: (v?: number | null) => (typeof v === 'number' && Number.isFinite(v) ? `${v}%` : '--'),
   },
   {
     key: 'wind_speed_10m',
     icon: 'weather-windy',
     label: 'Wind',
-    format: (v: number, data: CurrentWeather) =>
-      `${Math.round(v)} km/h ${getWindDirection(data.wind_direction_10m)}`,
+    format: (v?: number | null, data?: CurrentWeather) =>
+      typeof v === 'number' && Number.isFinite(v)
+        ? `${Math.round(v)} km/h ${getWindDirection(data?.wind_direction_10m)}`.trim()
+        : '--',
   },
   {
     key: 'precipitation',
     icon: 'umbrella-outline',
     label: 'Precip.',
-    format: (v: number) => `${v} mm`,
+    format: (v?: number | null) => (typeof v === 'number' && Number.isFinite(v) ? `${v} mm` : '--'),
   },
   {
     key: 'uv_index',
     icon: 'white-balance-sunny',
     label: 'UV Index',
-    format: (v: number) => String(Math.round(v)),
+    format: (v?: number | null) =>
+      typeof v === 'number' && Number.isFinite(v) ? String(Math.round(v)) : '--',
   },
 ] as const;
 
 const formatTime = (time?: string) => {
-  if (!time) return '--:--';
+  if (!time) return 'N/A';
 
-  return new Date(time).toLocaleTimeString([], {
+  const parsedDate = new Date(time);
+
+  if (Number.isNaN(parsedDate.getTime())) return 'N/A';
+
+  return parsedDate.toLocaleTimeString([], {
     hour: '2-digit',
     minute: '2-digit',
     hour12: false,
