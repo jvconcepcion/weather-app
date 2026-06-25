@@ -8,6 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { CurrentWeather } from '../../components/CurrentWeather';
 import { DailyForecast } from '../../components/DailyForecast';
 import { HourlyForecast } from '../../components/HourlyForecast';
+import { PageHeader } from '../../components/PageHeader';
 import { WeatherStats } from '../../components/WeatherStats';
 import { getGradient, NIGHT_GRADIENT } from '../../constants/theme';
 import { getWMO } from '../../constants/wmo';
@@ -99,20 +100,7 @@ export default function LocationScreen() {
     return (
       <LinearGradient colors={NIGHT_GRADIENT} style={{ flex: 1 }}>
         <SafeAreaView style={{ flex: 1 }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              paddingHorizontal: 20,
-              paddingTop: 12,
-            }}
-          >
-            <TouchableOpacity onPress={() => router.back()}>
-              <MaterialCommunityIcons name="arrow-left" size={28} color="white" />
-            </TouchableOpacity>
-            <Text className="ml-4 text-lg font-semibold text-white">Location</Text>
-          </View>
-
+          <PageHeader title="Location" />
           <View
             style={{
               flex: 1,
@@ -140,13 +128,7 @@ export default function LocationScreen() {
             paddingTop: 12,
           }}
         >
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <TouchableOpacity onPress={() => router.back()}>
-              <MaterialCommunityIcons name="arrow-left" size={28} color="white" />
-            </TouchableOpacity>
-            <Text className="ml-4 text-lg font-semibold text-white">{name}</Text>
-          </View>
-
+          <PageHeader title={name ?? 'Location'} />
           <TouchableOpacity onPress={handleToggleFavorite} hitSlop={10}>
             <MaterialCommunityIcons
               name={isFavorite ? 'star' : 'star-outline'}

@@ -10,6 +10,7 @@ import { Chip } from '../components/Chip';
 import { CurrentWeather } from '../components/CurrentWeather';
 import { DailyForecast } from '../components/DailyForecast';
 import { HourlyForecast } from '../components/HourlyForecast';
+import { ProfileMenuButton } from '../components/ProfileMenuButton';
 import { SearchBar } from '../components/SearchBar';
 import { WeatherStats } from '../components/WeatherStats';
 import { getGradient, NIGHT_GRADIENT } from '../constants/theme';
@@ -91,25 +92,37 @@ export default function HomeScreen() {
             <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} tintColor="white" />
           }
         >
-          <View
-            style={{
-              marginTop: 16,
-              marginBottom: 24,
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: 8,
-            }}
-          >
-            <View style={{ flex: 1 }}>
-              <SearchBar />
-            </View>
-
-            <TouchableOpacity
-              onPress={handleToggleUnit}
-              className="h-12 items-center justify-center rounded-2xl border border-white/25 bg-white/15 px-4"
+          <View style={{ marginTop: 24, marginBottom: 24, gap: 12 }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+              }}
             >
-              <Text className="font-medium text-white">{unit === 'celsius' ? '°C' : '°F'}</Text>
-            </TouchableOpacity>
+              <ProfileMenuButton
+                onLoginPress={() => router.push('/login')}
+                onSettingsPress={() => router.push('/settings')}
+                onAboutPress={() => router.push('/about')}
+              />
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 8,
+              }}
+            >
+              <View style={{ flex: 1 }}>
+                <SearchBar />
+              </View>
+
+              <TouchableOpacity
+                onPress={handleToggleUnit}
+                className="h-12 items-center justify-center rounded-2xl border border-white/25 bg-white/15 px-4"
+              >
+                <Text className="font-medium text-white">{unit === 'celsius' ? '°C' : '°F'}</Text>
+              </TouchableOpacity>
+            </View>
           </View>
 
           {recentSearches.length > 0 && (
