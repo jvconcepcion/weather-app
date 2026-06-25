@@ -16,6 +16,9 @@ import { useAppStore, type City } from '../../store/useAppStore';
 
 export default function LocationScreen() {
   const router = useRouter();
+  const favorites = useAppStore((state) => state.favorites);
+  const addFavorites = useAppStore((state) => state.addFavorite);
+  const removeFavorites = useAppStore((state) => state.removeFavorite);
   const addRecentSearch = useAppStore((state) => state.addRecentSearch);
   const [refreshKey, setRefreshKey] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -35,6 +38,16 @@ export default function LocationScreen() {
   const isInvalidLocation =
     Number.isNaN(cityId) || !Number.isFinite(parsedLat) || !Number.isFinite(parsedLon);
 
+  const currentCity: City = {
+    id: cityId,
+    name: name ?? '',
+    lat: parsedLat,
+    lon: parsedLon,
+  };
+
+  const isFavorite =
+    !isInvalidLocation && favorites.some((city) => String(city.id) === String(cityId));
+
   const weather = useWeather(
     isInvalidLocation ? null : parsedLat,
     isInvalidLocation ? null : parsedLon,
@@ -47,6 +60,17 @@ export default function LocationScreen() {
   async function handleRefresh() {
     setIsRefreshing(true);
     setRefreshKey((prev) => prev + 1);
+  }
+
+  function handleToggleFavorite() {
+    if (isInvalidLocation) return;
+
+    if (isFavorite) {
+      removeFavorites(cityId);
+      return;
+    }
+
+    addFavorites(currentCity);
   }
 
   const gradient =
@@ -111,14 +135,25 @@ export default function LocationScreen() {
           style={{
             flexDirection: 'row',
             alignItems: 'center',
+            justifyContent: 'space-between',
             paddingHorizontal: 20,
             paddingTop: 12,
           }}
         >
-          <TouchableOpacity onPress={() => router.back()}>
-            <MaterialCommunityIcons name="arrow-left" size={28} color="white" />
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <TouchableOpacity onPress={() => router.back()}>
+              <MaterialCommunityIcons name="arrow-left" size={28} color="white" />
+            </TouchableOpacity>
+            <Text className="ml-4 text-lg font-semibold text-white">{name}</Text>
+          </View>
+
+          <TouchableOpacity onPress={handleToggleFavorite} hitSlop={10}>
+            <MaterialCommunityIcons
+              name={isFavorite ? 'star' : 'star-outline'}
+              size={24}
+              color={isFavorite ? '#FFD700' : 'white'}
+            />
           </TouchableOpacity>
-          <Text className="ml-4 text-lg font-semibold text-white">{name}</Text>
         </View>
 
         <ScrollView
