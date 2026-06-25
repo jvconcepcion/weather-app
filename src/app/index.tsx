@@ -1,5 +1,6 @@
 import { WeatherSkeleton } from '@/components/WeatherSkeleton';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
@@ -16,7 +17,7 @@ import { getWMO } from '../constants/wmo';
 import { useLocation } from '../hooks/useLocation';
 import { useNetworkStatus } from '../hooks/useNetworkStatus';
 import { useWeather } from '../hooks/useWeather';
-import { useAppStore } from '../store/useAppStore';
+import { useAppStore, type City } from '../store/useAppStore';
 
 export default function HomeScreen() {
   const [refreshKey, setRefreshKey] = useState(0);
@@ -25,6 +26,8 @@ export default function HomeScreen() {
   const weather = useWeather(location.latitude, location.longitude, refreshKey);
   const unit = useAppStore((state) => state.unit);
   const setUnit = useAppStore((state) => state.setUnit);
+  const favorites = useAppStore((state) => state.favorites);
+  const addFavorite = useAppStore((state) => state.addFavorite);
   const recentSearches = useAppStore((state) => state.recentSearches);
   const clearRecentSearches = useAppStore((state) => state.clearRecentSearches);
   const removeRecentSearch = useAppStore((state) => state.removeRecentSearch);
@@ -33,13 +36,26 @@ export default function HomeScreen() {
   const weatherCode = weather.data?.current?.weather_code ?? 0;
   const sunrise = weather.data?.daily?.sunrise?.[0];
   const sunset = weather.data?.daily?.sunset?.[0];
+  const isCityFavorite = (city: City) =>
+    favorites.some((item) => String(item.id) === String(city.id));
 
-  const handleToggleUnit = () => {
+  const handleToggleUnit = async () => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setUnit(unit === 'celsius' ? 'fahrenheit' : 'celsius');
   };
 
+  async function handleRecentLongPress(city: City) {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    const alreadyFavorite = favorites.some((item) => String(item.id) === String(city.id));
+
+    if (!alreadyFavorite) {
+      addFavorite(city);
+    }
+  }
+
   async function handleRefresh() {
     setIsRefreshing(true);
+    await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     setRefreshKey((prev) => prev + 1);
   }
 
@@ -140,20 +156,34 @@ export default function HomeScreen() {
                 </TouchableOpacity>
               </View>
 
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ gap: 8 }}
-              >
-                {recentSearches.map((city) => (
-                  <Chip
-                    key={String(city.id)}
-                    title={city.name}
-                    onPress={() => handleRecentPress(city)}
-                    onActionPress={() => removeRecentSearch(city.id)}
-                  />
-                ))}
-              </ScrollView>
+              <View style={{ position: 'relative' }}>
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{ gap: 8, paddingRight: 24 }}
+                >
+                  {recentSearches.map((city) => (
+                    <Chip
+                      key={String(city.id)}
+                      title={city.name}
+                      onPress={() => handleRecentPress(city)}
+                      onLongPress={() => handleRecentLongPress(city)}
+                      onActionPress={() => removeRecentSearch(city.id)}
+                      containerStyle={
+                        isCityFavorite(city)
+                          ? {
+                              backgroundColor: 'rgba(245, 158, 11, 0.16)',
+                              borderColor: 'rgba(245, 158, 11, 0.32)',
+                            }
+                          : undefined
+                      }
+                      actionIconColor={
+                        isCityFavorite(city) ? '#FBBF24' : 'rgba(255, 255, 255, 0.85)'
+                      }
+                    />
+                  ))}
+                </ScrollView>
+              </View>
             </View>
           )}
 

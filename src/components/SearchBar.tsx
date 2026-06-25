@@ -1,4 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import * as Haptics from 'expo-haptics';
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -17,7 +18,8 @@ export function SearchBar() {
   const showEmptyState =
     trimmedQuery.length >= 2 && hasSearched && !loading && results.length === 0;
 
-  function handleSelect(result: GeocodingResult) {
+  async function handleSelect(result: GeocodingResult) {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setQuery('');
     setResults([]);
     router.push({
