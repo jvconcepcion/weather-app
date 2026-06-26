@@ -1,6 +1,6 @@
 import { WeatherSkeleton } from '@/components/WeatherSkeleton';
+import { triggerLightImpact, triggerSuccessHaptic } from '@/utils/haptics';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
@@ -41,12 +41,12 @@ export default function HomeScreen() {
     favorites.some((item) => String(item.id) === String(city.id));
 
   const handleToggleUnit = async () => {
-    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    await triggerLightImpact();
     setUnit(unit === 'celsius' ? 'fahrenheit' : 'celsius');
   };
 
   async function handleRecentLongPress(city: City) {
-    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    await triggerLightImpact();
     const alreadyFavorite = favorites.some((item) => String(item.id) === String(city.id));
 
     if (!alreadyFavorite) {
@@ -56,7 +56,7 @@ export default function HomeScreen() {
 
   async function handleRefresh() {
     setIsRefreshing(true);
-    await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    await triggerSuccessHaptic();
     setRefreshKey((prev) => prev + 1);
   }
 
