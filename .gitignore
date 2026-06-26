@@ -42,6 +42,6 @@ app-example
 /ios
 /android
 
-# Firebase config (download from Firebase Console → Project Settings)
+# Firebase config (download from Firebase Console > Project Settings)
 google-services.json
 GoogleService-Info.plist
