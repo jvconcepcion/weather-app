@@ -32,9 +32,10 @@ export function useWeather(
     const cached = getWeatherCache(cacheKey);
     const hasMatchingCache = cached && cached.unit === unit;
 
+    // Show cached data immediately without a skeleton, the fetch below updates it silently in the background.
     setState({
       data: hasMatchingCache ? (cached.data as WeatherResponse) : null,
-      loading: true,
+      loading: !hasMatchingCache,
       error: null,
     });
 
