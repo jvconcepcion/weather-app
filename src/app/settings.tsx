@@ -1,4 +1,5 @@
-import * as Haptics from 'expo-haptics';
+import { showConfirmAlert } from '@/utils/alets';
+import { triggerLightImpact } from '@/utils/haptics';
 import React, { useState } from 'react';
 import { ScrollView, Switch, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -12,18 +13,52 @@ import { useAppStore } from '../store/useAppStore';
 
 export default function SettingsScreen() {
   const unit = useAppStore((state) => state.unit);
-  const hapticsEnabled = useAppStore((state) => state.hapticsEnabled);
   const setUnit = useAppStore((state) => state.setUnit);
+  const hapticsEnabled = useAppStore((state) => state.hapticsEnabled);
   const setHapticsEnabled = useAppStore((state) => state.setHapticsEnabled);
+  const clearFavorites = useAppStore((state) => state.clearFavorites);
+  const clearRecentSearches = useAppStore((state) => state.clearRecentSearches);
+  const clearWeatherCache = useAppStore((state) => state.clearWeatherCache);
 
   const [dailySummary, setDailySummary] = useState(false);
 
   const handleSetUnit = async (nextUnit: 'celsius' | 'fahrenheit') => {
     if (unit === nextUnit) return;
-    if (hapticsEnabled) {
-      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    }
+    await triggerLightImpact();
     setUnit(nextUnit);
+  };
+
+  const handleClearFavorites = () => {
+    showConfirmAlert({
+      title: 'Clear favorites?',
+      message: 'This will remove all saved favorite cities.',
+      onConfirm: async () => {
+        await triggerLightImpact();
+        clearFavorites();
+      },
+    });
+  };
+
+  const handleClearRecentSearches = () => {
+    showConfirmAlert({
+      title: 'Clear recent searches?',
+      message: 'This will remove your saved city search history.',
+      onConfirm: async () => {
+        await triggerLightImpact();
+        clearRecentSearches();
+      },
+    });
+  };
+
+  const handleClearWeatherCache = () => {
+    showConfirmAlert({
+      title: 'Clear weather cache?',
+      message: 'This will reset stored forecast and weather data.',
+      onConfirm: async () => {
+        await triggerLightImpact();
+        clearWeatherCache();
+      },
+    });
   };
 
   return (
@@ -64,15 +99,23 @@ export default function SettingsScreen() {
           <SettingsSectionLabel title="Data" />
           <SettingsCard>
             <SettingsActionRow
+              title="Clear favorites"
+              subtitle="Remove all saved favorite cities"
+              danger
+              onPress={handleClearFavorites}
+            />
+            <SettingsActionRow
               title="Clear recent searches"
               subtitle="Remove saved city search history"
               danger
+              onPress={handleClearRecentSearches}
             />
             <View className="ml-4 h-px bg-slate-800" />
             <SettingsActionRow
               title="Clear weather cache"
               subtitle="Reset stored forecast and weather data"
               danger
+              onPress={handleClearWeatherCache}
             />
           </SettingsCard>
 
@@ -80,7 +123,7 @@ export default function SettingsScreen() {
           <SettingsCard className="mb-0">
             <SettingsRow
               title="Daily weather summary"
-              subtitle="Coming soon in a later phase"
+              subtitle="Coming soon..."
               right={
                 <View className="opacity-60">
                   <Switch

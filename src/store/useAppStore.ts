@@ -29,13 +29,17 @@ interface AppStore {
   setUnit: (unit: Unit) => void;
   addFavorite: (city: City) => void;
   removeFavorite: (cityId: number) => void;
+  clearFavorites: () => void;
+
   addRecentSearch: (city: City) => void;
   removeRecentSearch: (cityId: number) => void;
   clearRecentSearches: () => void;
+
   setHapticsEnabled: (enabled: boolean) => void;
 
   setWeatherCache: (key: string, entry: CachedWeatherEntry) => void;
   getWeatherCache: (key: string) => CachedWeatherEntry | undefined;
+  clearWeatherCache: () => void;
 }
 
 export const useAppStore = create<AppStore>()(
@@ -62,6 +66,8 @@ export const useAppStore = create<AppStore>()(
           favorites: state.favorites.filter((city) => city.id !== cityId),
         })),
 
+      clearFavorites: () => set({ favorites: [] }),
+
       addRecentSearch: (city) =>
         set((state) => {
           const filtered = state.recentSearches.filter((item) => item.id !== city.id);
@@ -86,6 +92,8 @@ export const useAppStore = create<AppStore>()(
         })),
 
       getWeatherCache: (key) => get().weatherCache[key],
+
+      clearWeatherCache: () => set({ weatherCache: {} }),
     }),
     {
       name: 'app-storage',
