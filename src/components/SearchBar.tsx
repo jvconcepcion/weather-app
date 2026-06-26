@@ -1,5 +1,5 @@
+import { triggerLightImpact } from '@/utils/haptics';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import * as Haptics from 'expo-haptics';
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -19,7 +19,7 @@ export function SearchBar() {
     trimmedQuery.length >= 2 && hasSearched && !loading && results.length === 0;
 
   async function handleSelect(result: GeocodingResult) {
-    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    await triggerLightImpact();
     setQuery('');
     setResults([]);
     router.push({
