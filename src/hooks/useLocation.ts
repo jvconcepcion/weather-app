@@ -9,16 +9,25 @@ export type LocationState = {
   loading: boolean;
 };
 
+type ResolvedLocation = {
+  latitude: number;
+  longitude: number;
+  cityName: string;
+};
+
+// Persists across unmount/remount within the same session so returning to home from settings doesn't re-run the GPS and reverse geocode sequence.
+let locationCache: ResolvedLocation | null = null;
+
 export function useLocation(): LocationState {
-  const [state, setState] = useState<LocationState>({
-    latitude: null,
-    longitude: null,
-    cityName: null,
-    error: null,
-    loading: true,
-  });
+  const [state, setState] = useState<LocationState>(() =>
+    locationCache
+      ? { ...locationCache, error: null, loading: false }
+      : { latitude: null, longitude: null, cityName: null, error: null, loading: true },
+  );
 
   useEffect(() => {
+    if (locationCache) return;
+
     let cancelled = false;
 
     async function getLocation() {
@@ -38,6 +47,8 @@ export function useLocation(): LocationState {
 
       const [address] = await Location.reverseGeocodeAsync({ latitude, longitude });
       const cityName = address?.city ?? address?.region ?? 'My Location';
+
+      locationCache = { latitude, longitude, cityName };
 
       if (!cancelled) {
         setState({ latitude, longitude, cityName, error: null, loading: false });
