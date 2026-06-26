@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useState } from 'react';
-import { Modal, Pressable, Text, TouchableOpacity, View } from 'react-native';
+import { useRef, useState } from 'react';
+import { Dimensions, Modal, Pressable, Text, TouchableOpacity, View } from 'react-native';
 
 interface ProfileMenuButtonProps {
   onLoginPress?: () => void;
@@ -40,6 +40,8 @@ export function ProfileMenuButton({
   onAboutPress,
 }: ProfileMenuButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [menuPos, setMenuPos] = useState({ top: 0, right: 0 });
+  const buttonRef = useRef<View>(null);
 
   function closeMenu() {
     setIsOpen(false);
@@ -50,10 +52,21 @@ export function ProfileMenuButton({
     action?.();
   }
 
+  function openMenu() {
+    buttonRef.current?.measure(
+      (_x: number, _y: number, width: number, height: number, pageX: number, pageY: number) => {
+        const screenWidth = Dimensions.get('window').width;
+        setMenuPos({ top: pageY + height + 6, right: screenWidth - pageX - width });
+        setIsOpen(true);
+      },
+    );
+  }
+
   return (
     <>
       <TouchableOpacity
-        onPress={() => setIsOpen(true)}
+        ref={buttonRef}
+        onPress={openMenu}
         activeOpacity={0.85}
         style={{
           width: 36,
@@ -70,20 +83,10 @@ export function ProfileMenuButton({
       </TouchableOpacity>
 
       <Modal visible={isOpen} transparent animationType="fade" onRequestClose={closeMenu}>
-        <Pressable
-          onPress={closeMenu}
-          style={{
-            flex: 1,
-            backgroundColor: 'transparent',
-          }}
-        >
+        <Pressable onPress={closeMenu} style={{ flex: 1, backgroundColor: 'transparent' }}>
           <View
             pointerEvents="box-none"
-            style={{
-              position: 'absolute',
-              top: 54,
-              right: 16,
-            }}
+            style={{ position: 'absolute', top: menuPos.top, right: menuPos.right }}
           >
             <Pressable
               onPress={(e) => e.stopPropagation()}
