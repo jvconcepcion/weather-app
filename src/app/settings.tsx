@@ -1,7 +1,7 @@
 import { showConfirmAlert } from '@/utils/alets';
 import { triggerLightImpact } from '@/utils/haptics';
 import React, { useState } from 'react';
-import { ScrollView, Switch, View } from 'react-native';
+import { ScrollView, Share, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { PageHeader } from '../components/PageHeader';
 import { SettingsActionRow } from '../components/settings/SettingsActionRow';
@@ -19,8 +19,15 @@ export default function SettingsScreen() {
   const clearFavorites = useAppStore((state) => state.clearFavorites);
   const clearRecentSearches = useAppStore((state) => state.clearRecentSearches);
   const clearWeatherCache = useAppStore((state) => state.clearWeatherCache);
+  const pushToken = useAppStore((state) => state.pushToken);
+  const pushTokenError = useAppStore((state) => state.pushTokenError);
 
   const [dailySummary, setDailySummary] = useState(false);
+
+  const handleShareToken = () => {
+    if (!pushToken) return;
+    Share.share({ message: pushToken });
+  };
 
   const handleSetUnit = async (nextUnit: 'celsius' | 'fahrenheit') => {
     if (unit === nextUnit) return;
@@ -136,6 +143,62 @@ export default function SettingsScreen() {
                 </View>
               }
             />
+
+            <View className="ml-4 h-px bg-slate-800" />
+
+            <View style={{ padding: 16, gap: 8 }}>
+              <Text
+                style={{ color: '#94a3b8', fontSize: 12, fontWeight: '600', letterSpacing: 0.5 }}
+              >
+                EXPO PUSH TOKEN
+              </Text>
+              <Text style={{ color: '#64748b', fontSize: 12 }}>
+                Use this token at expo.dev/notifications to send a test push notification.
+              </Text>
+
+              {pushToken ? (
+                <>
+                  <TextInput
+                    value={pushToken}
+                    editable={false}
+                    selectTextOnFocus
+                    multiline
+                    style={{
+                      color: '#e2e8f0',
+                      fontSize: 12,
+                      fontFamily: 'monospace',
+                      backgroundColor: 'rgba(255,255,255,0.06)',
+                      borderWidth: 1,
+                      borderColor: 'rgba(255,255,255,0.1)',
+                      borderRadius: 10,
+                      padding: 12,
+                    }}
+                  />
+                  <TouchableOpacity
+                    onPress={handleShareToken}
+                    style={{
+                      alignSelf: 'flex-start',
+                      backgroundColor: 'rgba(124, 58, 237, 0.2)',
+                      borderWidth: 1,
+                      borderColor: 'rgba(124, 58, 237, 0.4)',
+                      borderRadius: 8,
+                      paddingHorizontal: 14,
+                      paddingVertical: 7,
+                    }}
+                  >
+                    <Text style={{ color: '#a78bfa', fontSize: 13, fontWeight: '600' }}>
+                      Share token
+                    </Text>
+                  </TouchableOpacity>
+                </>
+              ) : pushTokenError ? (
+                <Text style={{ color: '#f87171', fontSize: 12 }}>{pushTokenError}</Text>
+              ) : (
+                <Text style={{ color: '#475569', fontSize: 12 }}>
+                  Registering for push notifications...
+                </Text>
+              )}
+            </View>
           </SettingsCard>
         </ScrollView>
       </SafeAreaView>
