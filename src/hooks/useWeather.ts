@@ -32,10 +32,10 @@ export function useWeather(
     const cached = getWeatherCache(cacheKey);
     const hasMatchingCache = cached && cached.unit === unit;
 
-    // Show cached data immediately without a skeleton, the fetch below updates it silently in the background.
+    // On manual refresh always show loading even with cache, so the RefreshControl spinner can resolve.
     setState({
       data: hasMatchingCache ? (cached.data as WeatherResponse) : null,
-      loading: !hasMatchingCache,
+      loading: !hasMatchingCache || refreshKey > 0,
       error: null,
     });
 
