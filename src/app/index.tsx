@@ -17,6 +17,7 @@ import { WeatherStats } from '../components/WeatherStats';
 import { getGradient, NIGHT_GRADIENT } from '../constants/theme';
 import { getWMO } from '../constants/wmo';
 import { useLocation } from '../hooks/useLocation';
+import { useBreakpoint } from '../hooks/useBreakpoint';
 import { useNetworkStatus } from '../hooks/useNetworkStatus';
 import { useWeather } from '../hooks/useWeather';
 import { useAppStore, type City } from '../store/useAppStore';
@@ -25,6 +26,7 @@ export default function HomeScreen() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const location = useLocation();
+  const { isTablet } = useBreakpoint();
   const weather = useWeather(location.latitude, location.longitude, refreshKey);
   const unit = useAppStore((state) => state.unit);
   const setUnit = useAppStore((state) => state.setUnit);
@@ -87,7 +89,13 @@ export default function HomeScreen() {
     <LinearGradient colors={gradient} style={{ flex: 1 }}>
       <SafeAreaView className="flex-1">
         <ScrollView
-          contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 32 }}
+          contentContainerStyle={{
+            paddingHorizontal: isTablet ? 40 : 20,
+            paddingBottom: 32,
+            maxWidth: isTablet ? 768 : undefined,
+            alignSelf: isTablet ? 'center' : undefined,
+            width: '100%',
+          }}
           refreshControl={
             <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} tintColor="white" />
           }
