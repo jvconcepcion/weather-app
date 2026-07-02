@@ -1,6 +1,15 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRef, useState } from 'react';
-import { Dimensions, Modal, Pressable, Text, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Dimensions,
+  Image,
+  Modal,
+  Pressable,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { signOut } from '../lib/googleSignIn';
 import { useAuthStore } from '../store/useAuthStore';
 
@@ -36,6 +45,71 @@ function MenuItem({ icon, label, onPress, danger }: MenuItemProps) {
   );
 }
 
+interface SignOutConfirmModalProps {
+  visible: boolean;
+  signingOut: boolean;
+  onConfirm: () => void;
+  onCancel: () => void;
+}
+
+function SignOutConfirmModal({
+  visible,
+  signingOut,
+  onConfirm,
+  onCancel,
+}: SignOutConfirmModalProps) {
+  return (
+    <Modal visible={visible} transparent animationType="fade" onRequestClose={onCancel}>
+      <Pressable onPress={onCancel} className="flex-1 items-center justify-center bg-black/60">
+        <Pressable
+          onPress={(e) => e.stopPropagation()}
+          className="mx-8 w-full max-w-xs rounded-3xl border border-white/10 bg-[#151B28] p-6"
+          style={{
+            shadowColor: '#000',
+            shadowOpacity: 0.4,
+            shadowRadius: 24,
+            shadowOffset: { width: 0, height: 8 },
+            elevation: 16,
+          }}
+        >
+          <View className="mb-1 items-center">
+            <View className="mb-4 h-12 w-12 items-center justify-center rounded-full bg-red-500/10">
+              <MaterialCommunityIcons name="logout" size={24} color="#f87171" />
+            </View>
+            <Text className="mb-1 text-center text-[17px] font-bold text-white">
+              Are you sure to sign out?
+            </Text>
+          </View>
+
+          <View className="mt-4 gap-2.5">
+            <TouchableOpacity
+              onPress={onConfirm}
+              disabled={signingOut}
+              activeOpacity={0.8}
+              className="items-center justify-center rounded-2xl bg-red-500/90 py-3.5"
+            >
+              {signingOut ? (
+                <ActivityIndicator color="white" size="small" />
+              ) : (
+                <Text className="text-[15px] font-semibold text-white">Sign out</Text>
+              )}
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={onCancel}
+              disabled={signingOut}
+              activeOpacity={0.7}
+              className="items-center py-3"
+            >
+              <Text className="text-[15px] text-slate-400">Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </Pressable>
+      </Pressable>
+    </Modal>
+  );
+}
+
 export function ProfileMenuButton({
   onLoginPress,
   onSettingsPress,
@@ -43,6 +117,8 @@ export function ProfileMenuButton({
 }: ProfileMenuButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [menuPos, setMenuPos] = useState({ top: 0, right: 0 });
+  const [showSignOutConfirm, setShowSignOutConfirm] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
   const buttonRef = useRef<View>(null);
   const user = useAuthStore((state) => state.user);
   const isGuest = useAuthStore((state) => state.isGuest);
@@ -51,6 +127,8 @@ export function ProfileMenuButton({
   const fullName: string = user?.user_metadata?.full_name ?? '';
   const email: string = user?.email ?? '';
   const initial = fullName.charAt(0).toUpperCase() || email.charAt(0).toUpperCase();
+  const avatarUrl: string | null =
+    user?.user_metadata?.avatar_url ?? user?.user_metadata?.picture ?? null;
 
   function closeMenu() {
     setIsOpen(false);
@@ -61,10 +139,17 @@ export function ProfileMenuButton({
     action?.();
   }
 
-  async function handleSignOut() {
+  function handleSignOutPress() {
     closeMenu();
+    setShowSignOutConfirm(true);
+  }
+
+  async function handleSignOutConfirm() {
+    setSigningOut(true);
     await signOut();
     setGuest(false);
+    setSigningOut(false);
+    setShowSignOutConfirm(false);
   }
 
   function openMenu() {
@@ -83,20 +168,20 @@ export function ProfileMenuButton({
         ref={buttonRef}
         onPress={openMenu}
         activeOpacity={0.85}
-        className="h-9 w-9 items-center justify-center rounded-full"
-        style={{
-          backgroundColor: user ? '#7c3aed' : 'rgba(255, 255, 255, 0.14)',
-          borderWidth: 1,
-          borderColor: user ? 'rgba(124, 58, 237, 0.6)' : 'rgba(255, 255, 255, 0.18)',
-        }}
+        className={`h-11 w-11 items-center justify-center rounded-full border ${user ? 'border-violet-600/60 bg-violet-600' : 'border-white/[0.18] bg-white/[0.14]'}`}
       >
         {user ? (
-          <Text className="text-[15px] font-bold text-white">{initial}</Text>
+          avatarUrl ? (
+            <Image source={{ uri: avatarUrl }} className="h-11 w-11 rounded-full" />
+          ) : (
+            <Text className="text-[15px] font-bold text-white">{initial}</Text>
+          )
         ) : (
           <MaterialCommunityIcons name="account-outline" size={20} color="white" />
         )}
       </TouchableOpacity>
 
+      {/* Profile dropdown menu */}
       <Modal visible={isOpen} transparent animationType="fade" onRequestClose={closeMenu}>
         <Pressable onPress={closeMenu} className="flex-1">
           <View
@@ -138,7 +223,7 @@ export function ProfileMenuButton({
                     onPress={() => handlePress(onAboutPress)}
                   />
                   <View className="my-1 h-px bg-white/[0.08]" />
-                  <MenuItem icon="logout" label="Sign out" onPress={handleSignOut} danger />
+                  <MenuItem icon="logout" label="Sign out" onPress={handleSignOutPress} danger />
                 </>
               ) : isGuest ? (
                 <>
@@ -184,6 +269,13 @@ export function ProfileMenuButton({
           </View>
         </Pressable>
       </Modal>
+
+      <SignOutConfirmModal
+        visible={showSignOutConfirm}
+        signingOut={signingOut}
+        onConfirm={handleSignOutConfirm}
+        onCancel={() => setShowSignOutConfirm(false)}
+      />
     </>
   );
 }

@@ -1,5 +1,6 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import * as Notifications from 'expo-notifications';
+import * as SplashScreen from 'expo-splash-screen';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { useEffect } from 'react';
 import { Platform } from 'react-native';
@@ -8,6 +9,8 @@ import { useSupabaseSync } from '../hooks/useSupabaseSync';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/useAuthStore';
 import './globals.css';
+
+SplashScreen.preventAutoHideAsync();
 
 GoogleSignin.configure({
   webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
@@ -46,6 +49,7 @@ function useProtectedRoute() {
 export default function RootLayout() {
   const setSession = useAuthStore((state) => state.setSession);
   const setInitialized = useAuthStore((state) => state.setInitialized);
+  const initialized = useAuthStore((state) => state.initialized);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -62,6 +66,12 @@ export default function RootLayout() {
     return () => subscription.unsubscribe();
   }, [setSession, setInitialized]);
 
+  useEffect(() => {
+    if (initialized) {
+      SplashScreen.hideAsync();
+    }
+  }, [initialized]);
+
   useProtectedRoute();
   usePushNotifications();
   useSupabaseSync();
@@ -75,6 +85,7 @@ export default function RootLayout() {
       }}
     >
       <Stack.Screen name="index" options={{ contentStyle: { backgroundColor: '#0B1220' } }} />
+      <Stack.Screen name="login" options={{ animation: 'fade' }} />
       <Stack.Screen
         name="location/[id]"
         options={{ animation: Platform.OS === 'ios' ? 'ios_from_right' : 'slide_from_right' }}
