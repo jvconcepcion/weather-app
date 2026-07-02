@@ -3,8 +3,9 @@ import * as Notifications from 'expo-notifications';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { useEffect } from 'react';
 import { Platform } from 'react-native';
-import { supabase } from '../lib/supabase';
 import { usePushNotifications } from '../hooks/usePushNotifications';
+import { useSupabaseSync } from '../hooks/useSupabaseSync';
+import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/useAuthStore';
 import './globals.css';
 
@@ -63,6 +64,7 @@ export default function RootLayout() {
 
   useProtectedRoute();
   usePushNotifications();
+  useSupabaseSync();
 
   return (
     <Stack
