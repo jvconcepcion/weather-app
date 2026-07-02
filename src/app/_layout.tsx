@@ -85,6 +85,7 @@ export default function RootLayout() {
       }}
     >
       <Stack.Screen name="index" options={{ contentStyle: { backgroundColor: '#0B1220' } }} />
+      <Stack.Screen name="login" options={{ animation: 'fade' }} />
       <Stack.Screen
         name="location/[id]"
         options={{ animation: Platform.OS === 'ios' ? 'ios_from_right' : 'slide_from_right' }}
