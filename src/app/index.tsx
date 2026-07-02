@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { RefreshControl, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import Animated, { FadeIn } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Chip } from '../components/Chip';
 import { CurrentWeather } from '../components/CurrentWeather';
@@ -113,7 +114,7 @@ export default function HomeScreen() {
           </View>
 
           {recentSearches.length > 0 && (
-            <View className="mb-5">
+            <Animated.View entering={FadeIn.duration(400)} className="mb-5">
               <View className="mb-2.5 flex-row items-center justify-between">
                 <Text className="text-base font-semibold text-white">Recent Searches</Text>
                 <TouchableOpacity
@@ -153,7 +154,7 @@ export default function HomeScreen() {
                   />
                 ))}
               </ScrollView>
-            </View>
+            </Animated.View>
           )}
 
           {!isConnected && (
