@@ -48,7 +48,6 @@ export default function HomeScreen() {
   async function handleRecentLongPress(city: City) {
     await triggerLightImpact();
     const alreadyFavorite = favorites.some((item) => String(item.id) === String(city.id));
-
     if (!alreadyFavorite) {
       addFavorite(city);
     }
@@ -85,37 +84,25 @@ export default function HomeScreen() {
 
   return (
     <LinearGradient colors={gradient} style={{ flex: 1 }}>
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView className="flex-1">
         <ScrollView
           contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 32 }}
           refreshControl={
             <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} tintColor="white" />
           }
         >
-          <View style={{ marginTop: 24, marginBottom: 24, gap: 12 }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-              }}
-            >
+          <View className="mb-6 mt-6 gap-3">
+            <View className="items-end">
               <ProfileMenuButton
                 onLoginPress={() => router.push('/login')}
                 onSettingsPress={() => router.push('/settings')}
                 onAboutPress={() => router.push('/about')}
               />
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 8,
-              }}
-            >
-              <View style={{ flex: 1 }}>
+            <View className="flex-row items-center gap-2">
+              <View className="flex-1">
                 <SearchBar />
               </View>
-
               <TouchableOpacity
                 onPress={handleToggleUnit}
                 className="h-12 items-center justify-center rounded-2xl border border-white/25 bg-white/15 px-4"
@@ -126,77 +113,46 @@ export default function HomeScreen() {
           </View>
 
           {recentSearches.length > 0 && (
-            <View style={{ marginBottom: 20 }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  marginBottom: 10,
-                }}
-              >
-                <Text style={{ color: 'white', fontSize: 16, fontWeight: '600' }}>
-                  Recent Searches
-                </Text>
+            <View className="mb-5">
+              <View className="mb-2.5 flex-row items-center justify-between">
+                <Text className="text-base font-semibold text-white">Recent Searches</Text>
                 <TouchableOpacity
                   onPress={clearRecentSearches}
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 6,
-                    paddingHorizontal: 10,
-                    paddingVertical: 6,
-                    borderRadius: 999,
-                    backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                    borderWidth: 1,
-                    borderColor: 'rgba(255, 255, 255, 0.12)',
-                  }}
+                  className="flex-row items-center gap-1.5 rounded-full border border-white/[0.12] bg-white/[0.08] px-2.5 py-1.5"
                 >
                   <MaterialCommunityIcons
                     name="delete-outline"
                     size={14}
                     color="rgba(255, 255, 255, 0.85)"
                   />
-                  <Text
-                    style={{
-                      color: 'rgba(255, 255, 255, 0.85)',
-                      fontSize: 12,
-                      fontWeight: '600',
-                    }}
-                  >
-                    Clear
-                  </Text>
+                  <Text className="text-xs font-semibold text-white/85">Clear</Text>
                 </TouchableOpacity>
               </View>
 
-              <View style={{ position: 'relative' }}>
-                <ScrollView
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={{ gap: 8, paddingRight: 24 }}
-                >
-                  {recentSearches.map((city) => (
-                    <Chip
-                      key={String(city.id)}
-                      title={city.name}
-                      onPress={() => handleRecentPress(city)}
-                      onLongPress={() => handleRecentLongPress(city)}
-                      onActionPress={() => removeRecentSearch(city.id)}
-                      containerStyle={
-                        isCityFavorite(city)
-                          ? {
-                              backgroundColor: 'rgba(245, 158, 11, 0.16)',
-                              borderColor: 'rgba(245, 158, 11, 0.32)',
-                            }
-                          : undefined
-                      }
-                      actionIconColor={
-                        isCityFavorite(city) ? '#FBBF24' : 'rgba(255, 255, 255, 0.85)'
-                      }
-                    />
-                  ))}
-                </ScrollView>
-              </View>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{ gap: 8, paddingRight: 24 }}
+              >
+                {recentSearches.map((city) => (
+                  <Chip
+                    key={String(city.id)}
+                    title={city.name}
+                    onPress={() => handleRecentPress(city)}
+                    onLongPress={() => handleRecentLongPress(city)}
+                    onActionPress={() => removeRecentSearch(city.id)}
+                    containerStyle={
+                      isCityFavorite(city)
+                        ? {
+                            backgroundColor: 'rgba(245, 158, 11, 0.16)',
+                            borderColor: 'rgba(245, 158, 11, 0.32)',
+                          }
+                        : undefined
+                    }
+                    actionIconColor={isCityFavorite(city) ? '#FBBF24' : 'rgba(255, 255, 255, 0.85)'}
+                  />
+                ))}
+              </ScrollView>
             </View>
           )}
 
@@ -213,7 +169,7 @@ export default function HomeScreen() {
           {location.loading || weather.loading ? (
             <WeatherSkeleton />
           ) : location.error ? (
-            <View style={{ alignItems: 'center', paddingVertical: 80 }}>
+            <View className="items-center py-20">
               <Text className="text-center text-white">{location.error}</Text>
               <TouchableOpacity
                 onPress={handleRefresh}
@@ -223,7 +179,7 @@ export default function HomeScreen() {
               </TouchableOpacity>
             </View>
           ) : weather.error ? (
-            <View style={{ alignItems: 'center', paddingVertical: 80 }}>
+            <View className="items-center py-20">
               <Text className="text-center text-white">{weather.error}</Text>
               <TouchableOpacity
                 onPress={handleRefresh}
@@ -233,7 +189,7 @@ export default function HomeScreen() {
               </TouchableOpacity>
             </View>
           ) : weather.data ? (
-            <View style={{ gap: 16 }}>
+            <View className="gap-4">
               <CurrentWeather
                 data={weather.data.current}
                 cityName={location.cityName || 'Current location'}
