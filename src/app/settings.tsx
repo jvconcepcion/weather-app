@@ -9,6 +9,7 @@ import { SettingsCard } from '../components/settings/SettingsCard';
 import { SettingsRow } from '../components/settings/SettingsRow';
 import { SettingsSectionLabel } from '../components/settings/SettingsSectionLabel';
 import { UnitToggle } from '../components/settings/UnitToggle';
+import { useBreakpoint } from '../hooks/useBreakpoint';
 import { useAppStore } from '../store/useAppStore';
 
 export default function SettingsScreen() {
@@ -23,6 +24,7 @@ export default function SettingsScreen() {
   const pushTokenError = useAppStore((state) => state.pushTokenError);
 
   const [dailySummary, setDailySummary] = useState(false);
+  const { isTablet } = useBreakpoint();
 
   const handleShareToken = () => {
     if (!pushToken) return;
@@ -71,13 +73,28 @@ export default function SettingsScreen() {
   return (
     <View className="flex-1 bg-[#0B1220]">
       <SafeAreaView className="flex-1">
-        <View className="px-5 pt-3">
+        <View
+          style={{
+            paddingHorizontal: isTablet ? 40 : 20,
+            paddingTop: 12,
+            maxWidth: isTablet ? 768 : undefined,
+            alignSelf: isTablet ? 'center' : undefined,
+            width: '100%',
+          }}
+        >
           <PageHeader title="Settings" />
         </View>
 
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 20, paddingBottom: 32 }}
+          contentContainerStyle={{
+            paddingHorizontal: isTablet ? 40 : 20,
+            paddingTop: 20,
+            paddingBottom: 32,
+            maxWidth: isTablet ? 768 : undefined,
+            alignSelf: isTablet ? 'center' : undefined,
+            width: '100%',
+          }}
         >
           <SettingsSectionLabel title="Preferences" />
           <SettingsCard>

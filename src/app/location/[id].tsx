@@ -12,6 +12,7 @@ import { PageHeader } from '../../components/PageHeader';
 import { WeatherStats } from '../../components/WeatherStats';
 import { getGradient, NIGHT_GRADIENT } from '../../constants/theme';
 import { getWMO } from '../../constants/wmo';
+import { useBreakpoint } from '../../hooks/useBreakpoint';
 import { useWeather } from '../../hooks/useWeather';
 import { useAppStore, type City } from '../../store/useAppStore';
 
@@ -49,6 +50,7 @@ export default function LocationScreen() {
   const isFavorite =
     !isInvalidLocation && favorites.some((city) => String(city.id) === String(cityId));
 
+  const { isTablet } = useBreakpoint();
   const weather = useWeather(
     isInvalidLocation ? null : parsedLat,
     isInvalidLocation ? null : parsedLon,
@@ -124,8 +126,11 @@ export default function LocationScreen() {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
-            paddingHorizontal: 20,
+            paddingHorizontal: isTablet ? 40 : 20,
             paddingTop: 12,
+            maxWidth: isTablet ? 768 : undefined,
+            alignSelf: isTablet ? 'center' : undefined,
+            width: '100%',
           }}
         >
           <PageHeader title={name ?? 'Location'} />
@@ -139,7 +144,13 @@ export default function LocationScreen() {
         </View>
 
         <ScrollView
-          contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 32 }}
+          contentContainerStyle={{
+            paddingHorizontal: isTablet ? 40 : 20,
+            paddingBottom: 32,
+            maxWidth: isTablet ? 768 : undefined,
+            alignSelf: isTablet ? 'center' : undefined,
+            width: '100%',
+          }}
           refreshControl={
             <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} tintColor="white" />
           }
