@@ -47,7 +47,11 @@ function useProtectedRoute() {
       router.replace('/reset-password' as never);
     } else if (!isAuthenticated && !onLoginScreen && !onResetScreen && !onCallbackScreen) {
       router.replace('/login');
-    } else if (isAuthenticated && (onLoginScreen || onCallbackScreen) && !requiresPasswordReset) {
+    } else if (
+      isAuthenticated &&
+      (onLoginScreen || onCallbackScreen || onResetScreen) &&
+      !requiresPasswordReset
+    ) {
       router.replace('/');
     }
   }, [user, isGuest, initialized, requiresPasswordReset, segments, router]);
@@ -62,22 +66,30 @@ export default function RootLayout() {
   useEffect(() => {
     async function processUrl(url: string | null) {
       if (!url) return;
-      const hash = url.split('#')[1];
-      if (!hash) return;
-      const params = new URLSearchParams(hash);
-      const accessToken = params.get('access_token');
-      const refreshToken = params.get('refresh_token');
-      const type = params.get('type');
-      if (accessToken && refreshToken) {
-        await supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
-        if (type === 'recovery') {
-          setRequiresPasswordReset(true);
+      try {
+        const hash = url.split('#')[1];
+        if (!hash) return;
+        const params = new URLSearchParams(hash);
+        const accessToken = params.get('access_token');
+        const refreshToken = params.get('refresh_token');
+        const type = params.get('type');
+        if (accessToken && refreshToken) {
+          // Set flag before setSession so onAuthStateChange sees it correctly
+          if (type === 'recovery') setRequiresPasswordReset(true);
+          const { error } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken,
+          });
+          // If token was expired, clear the flag so user isn't trapped on /reset-password
+          if (error && type === 'recovery') setRequiresPasswordReset(false);
         }
-      }
+      } catch {}
     }
 
     // Handle cold-start deep link
-    Linking.getInitialURL().then(processUrl);
+    Linking.getInitialURL()
+      .then(processUrl)
+      .catch(() => {});
 
     // Handle deep link while app is open
     const linkSub = Linking.addEventListener('url', ({ url }) => processUrl(url));
@@ -89,8 +101,9 @@ export default function RootLayout() {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
+      if (event === 'SIGNED_OUT') setRequiresPasswordReset(false);
     });
 
     return () => {

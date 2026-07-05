@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -46,8 +46,13 @@ export default function ResetPasswordScreen() {
     }
 
     setDone(true);
-    setTimeout(() => setRequiresPasswordReset(false), 1500);
   }
+
+  useEffect(() => {
+    if (!done) return;
+    const timer = setTimeout(() => setRequiresPasswordReset(false), 1500);
+    return () => clearTimeout(timer);
+  }, [done, setRequiresPasswordReset]);
 
   return (
     <View className="flex-1 bg-[#0B1220]">
