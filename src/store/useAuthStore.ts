@@ -6,9 +6,11 @@ interface AuthStore {
   session: Session | null;
   initialized: boolean;
   isGuest: boolean;
+  requiresPasswordReset: boolean;
   setSession: (session: Session | null) => void;
   setInitialized: (initialized: boolean) => void;
   setGuest: (isGuest: boolean) => void;
+  setRequiresPasswordReset: (value: boolean) => void;
 }
 
 export const useAuthStore = create<AuthStore>((set) => ({
@@ -16,7 +18,9 @@ export const useAuthStore = create<AuthStore>((set) => ({
   session: null,
   initialized: false,
   isGuest: false,
+  requiresPasswordReset: false,
   setSession: (session) => set({ session, user: session?.user ?? null }),
   setInitialized: (initialized) => set({ initialized }),
   setGuest: (isGuest) => set({ isGuest }),
+  setRequiresPasswordReset: (value) => set({ requiresPasswordReset: value }),
 }));
