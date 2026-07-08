@@ -3,8 +3,8 @@ import { triggerLightImpact, triggerSuccessHaptic } from '@/utils/haptics';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { RefreshControl, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { Linking, RefreshControl, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Chip } from '../components/Chip';
@@ -25,6 +25,7 @@ import { useAppStore, type City } from '../store/useAppStore';
 export default function HomeScreen() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const scrollViewRef = useRef<ScrollView>(null);
   const location = useLocation();
   const { isTablet } = useBreakpoint();
   const weather = useWeather(location.latitude, location.longitude, refreshKey);
@@ -96,6 +97,7 @@ export default function HomeScreen() {
             alignSelf: isTablet ? 'center' : undefined,
             width: '100%',
           }}
+          ref={scrollViewRef}
           refreshControl={
             <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} tintColor="white" />
           }
@@ -178,13 +180,43 @@ export default function HomeScreen() {
           {location.loading || weather.loading ? (
             <WeatherSkeleton />
           ) : location.error ? (
-            <View className="items-center py-20">
-              <Text className="text-center text-white">{location.error}</Text>
+            <View className="items-center gap-5 px-6 py-16">
+              <View className="h-20 w-20 items-center justify-center rounded-full bg-white/10">
+                <MaterialCommunityIcons
+                  name={location.permissionDenied ? 'map-marker-off-outline' : 'wifi-off'}
+                  size={40}
+                  color="rgba(255,255,255,0.7)"
+                />
+              </View>
+              <Text className="text-center text-xl font-bold text-white">
+                {location.permissionDenied
+                  ? 'Location access needed'
+                  : "Couldn't get your location"}
+              </Text>
+              <Text className="text-center text-sm text-white/60">
+                {location.permissionDenied
+                  ? 'Weather App uses your location to show local weather. Enable it in Settings to continue.'
+                  : 'Something went wrong while fetching your location. Check your connection and try again.'}
+              </Text>
+              {location.permissionDenied ? (
+                <TouchableOpacity
+                  onPress={() => Linking.openSettings()}
+                  className="rounded-2xl border border-white/20 bg-white/15 px-6 py-3.5"
+                >
+                  <Text className="font-semibold text-white">Open Settings</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  onPress={location.retry}
+                  className="rounded-2xl border border-white/20 bg-white/15 px-6 py-3.5"
+                >
+                  <Text className="font-semibold text-white">Try Again</Text>
+                </TouchableOpacity>
+              )}
               <TouchableOpacity
-                onPress={handleRefresh}
-                className="m-2 rounded-md border border-white px-4 py-2"
+                onPress={() => scrollViewRef.current?.scrollTo({ y: 0, animated: true })}
               >
-                <Text className="text-white">Try Again</Text>
+                <Text className="text-sm text-white/60">Search manually instead →</Text>
               </TouchableOpacity>
             </View>
           ) : weather.error ? (
