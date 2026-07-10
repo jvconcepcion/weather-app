@@ -54,6 +54,7 @@ module.exports = {
       },
     ],
     '@react-native-google-signin/google-signin',
+    'expo-secure-store',
   ],
   experiments: {
     typedRoutes: true,

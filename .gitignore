@@ -46,3 +46,7 @@ app-example
 # Firebase config (download from Firebase Console > Project Settings)
 google-services.json
 GoogleService-Info.plist
+
+# EAS local credentials (keystore passwords)
+credentials.json
+debug.keystore.bak
