@@ -152,6 +152,7 @@ export default function HomeScreen() {
                     onPress={() => handleRecentPress(city)}
                     onLongPress={() => handleRecentLongPress(city)}
                     onActionPress={() => removeRecentSearch(city.id)}
+                    actionAccessibilityLabel={`Remove ${city.name} from recent searches`}
                     containerStyle={
                       isCityFavorite(city)
                         ? {

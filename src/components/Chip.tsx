@@ -17,6 +17,7 @@ interface ChipProps {
   onPress: () => void;
   onLongPress?: () => void;
   onActionPress: () => void;
+  actionAccessibilityLabel?: string;
   containerStyle?: StyleProp<ViewStyle>;
   titleStyle?: StyleProp<TextStyle>;
   actionIconColor?: string;
@@ -28,6 +29,7 @@ export function Chip({
   onPress,
   onLongPress,
   onActionPress,
+  actionAccessibilityLabel = 'Remove',
   containerStyle,
   titleStyle,
   actionIconColor = 'rgba(255, 255, 255, 0.85)',
@@ -63,6 +65,8 @@ export function Chip({
 
       <TouchableOpacity
         onPress={onActionPress}
+        accessibilityRole="button"
+        accessibilityLabel={actionAccessibilityLabel}
         style={{
           paddingLeft: 6,
           paddingRight: 12,
