@@ -17,7 +17,11 @@ export function PageHeader({ title }: PageHeaderProps) {
         paddingTop: 12,
       }}
     >
-      <TouchableOpacity onPress={() => router.replace('/')}>
+      <TouchableOpacity
+        onPress={() => router.replace('/')}
+        accessibilityRole="button"
+        accessibilityLabel="Go back"
+      >
         <MaterialCommunityIcons name="arrow-left" size={28} color="white" />
       </TouchableOpacity>
 

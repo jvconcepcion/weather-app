@@ -134,7 +134,12 @@ export default function LocationScreen() {
           }}
         >
           <PageHeader title={name ?? 'Location'} />
-          <TouchableOpacity onPress={handleToggleFavorite} hitSlop={10}>
+          <TouchableOpacity
+            onPress={handleToggleFavorite}
+            hitSlop={10}
+            accessibilityRole="button"
+            accessibilityLabel={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+          >
             <MaterialCommunityIcons
               name={isFavorite ? 'star' : 'star-outline'}
               size={24}

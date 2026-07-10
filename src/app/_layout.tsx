@@ -1,10 +1,10 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import * as Linking from 'expo-linking';
 import * as Notifications from 'expo-notifications';
-import { Stack, useRouter, useSegments } from 'expo-router';
+import { type ErrorBoundaryProps, Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { Platform } from 'react-native';
+import { Platform, Text, TouchableOpacity, View } from 'react-native';
 import { usePushNotifications } from '../hooks/usePushNotifications';
 import { useSupabaseSync } from '../hooks/useSupabaseSync';
 import { supabase } from '../lib/supabase';
@@ -12,6 +12,47 @@ import { useAuthStore } from '../store/useAuthStore';
 import './globals.css';
 
 SplashScreen.preventAutoHideAsync();
+
+export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
+  return (
+    <View
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#0B1220',
+        padding: 24,
+      }}
+    >
+      <Text style={{ fontSize: 18, fontWeight: '600', color: 'white', marginBottom: 8 }}>
+        Something went wrong
+      </Text>
+      <Text
+        style={{
+          fontSize: 13,
+          color: 'rgba(255,255,255,0.5)',
+          textAlign: 'center',
+          marginBottom: 24,
+        }}
+      >
+        {error.message}
+      </Text>
+      <TouchableOpacity
+        onPress={retry}
+        accessibilityRole="button"
+        accessibilityLabel="Try again"
+        style={{
+          paddingHorizontal: 24,
+          paddingVertical: 12,
+          backgroundColor: '#7c3aed',
+          borderRadius: 12,
+        }}
+      >
+        <Text style={{ color: 'white', fontWeight: '600' }}>Try again</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
 
 GoogleSignin.configure({
   webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,

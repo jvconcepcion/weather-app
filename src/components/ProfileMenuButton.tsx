@@ -168,6 +168,8 @@ export function ProfileMenuButton({
         ref={buttonRef}
         onPress={openMenu}
         activeOpacity={0.85}
+        accessibilityRole="button"
+        accessibilityLabel="Open profile menu"
         className={`h-11 w-11 items-center justify-center rounded-full border ${user ? 'border-violet-600/60 bg-violet-600' : 'border-white/[0.18] bg-white/[0.14]'}`}
       >
         {user ? (
