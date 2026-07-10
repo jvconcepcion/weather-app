@@ -1,4 +1,5 @@
 const BASE_URL = 'https://api.open-meteo.com/v1/forecast';
+const TIMEOUT_MS = 10_000;
 
 export type CurrentWeather = {
   temperature_2m: number;
@@ -69,7 +70,19 @@ export async function fetchWeather(
     temperature_unit: unit,
   });
 
-  const response = await fetch(`${BASE_URL}?${params}`);
-  if (!response.ok) throw new Error(`Weather API error: ${response.status}`);
-  return response.json() as Promise<WeatherResponse>;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
+
+  try {
+    const response = await fetch(`${BASE_URL}?${params}`, { signal: controller.signal });
+    if (!response.ok) throw new Error(`Weather API error: ${response.status}`);
+    return response.json() as Promise<WeatherResponse>;
+  } catch (err) {
+    if (err instanceof Error && err.name === 'AbortError') {
+      throw new Error('Weather request timed out. Check your connection and try again.');
+    }
+    throw err;
+  } finally {
+    clearTimeout(timeout);
+  }
 }
