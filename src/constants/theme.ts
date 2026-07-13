@@ -1,5 +1,7 @@
 import type { WMOCondition } from './wmo';
 
+export const SCREEN_BG = '#0B1220';
+
 export const CONDITION_GRADIENTS: Record<WMOCondition, [string, string]> = {
   clear: ['#f7971e', '#ffd200'],
   cloudy: ['#4b6cb7', '#182848'],
