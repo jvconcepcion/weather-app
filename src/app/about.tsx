@@ -3,23 +3,14 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ScreenContainer } from '../components/ScreenContainer';
 
 export default function AboutScreen() {
   const router = useRouter();
-  const insets = useSafeAreaInsets();
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: '#0B1220',
-        paddingHorizontal: 20,
-        paddingTop: 12,
-        paddingBottom: Math.max(insets.bottom + 10, 28),
-      }}
-    >
-      <SafeAreaView style={{ flex: 1 }}>
+    <ScreenContainer>
+      <View className="flex-1 px-5 pb-7 pt-3">
         <PageHeader title="About" />
         <View
           style={{
@@ -118,7 +109,7 @@ export default function AboutScreen() {
             </Text>
           </Pressable>
         </View>
-      </SafeAreaView>
-    </View>
+      </View>
+    </ScreenContainer>
   );
 }
