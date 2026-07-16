@@ -1,5 +1,35 @@
 {
   "enabledPlugins": {
     "expo@claude-plugins-official": true
+  },
+  "permissions": {
+    "allow": [
+      "Read",
+      "Edit",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(npm test)",
+      "Bash(npm run test:watch)",
+      "Bash(npx jest:*)",
+      "Bash(expo lint)",
+      "Bash(npx tsc:*)"
+    ],
+    "ask": [
+      "Bash(git push:*)",
+      "Bash(git commit:*)",
+      "Bash(git checkout:*)",
+      "Bash(npm install:*)",
+      "Bash(eas build:*)",
+      "Bash(npx expo prebuild:*)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./credentials.json)",
+      "Read(./google-services.json)",
+      "Read(./GoogleService-Info.plist)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)"
+    ]
   }
 }
