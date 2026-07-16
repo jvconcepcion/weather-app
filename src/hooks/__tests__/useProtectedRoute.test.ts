@@ -25,7 +25,7 @@ beforeEach(() => {
   useAuthStore.setState(AUTH_INITIAL);
 });
 
-describe('useProtectedRoute — not initialized', () => {
+describe('not initialized', () => {
   it('does not navigate before the store is initialized', () => {
     useAuthStore.setState({ initialized: false });
     renderHook(() => useProtectedRoute());
@@ -33,7 +33,7 @@ describe('useProtectedRoute — not initialized', () => {
   });
 });
 
-describe('useProtectedRoute — unauthenticated user', () => {
+describe('unauthenticated user', () => {
   it('redirects to /login from a protected screen', () => {
     useAuthStore.setState({ initialized: true, user: null, isGuest: false });
     (useSegments as jest.Mock).mockReturnValue(['index']);
@@ -63,7 +63,7 @@ describe('useProtectedRoute — unauthenticated user', () => {
   });
 });
 
-describe('useProtectedRoute — authenticated user', () => {
+describe('authenticated user', () => {
   const fakeUser = { id: 'u1', email: 'test@example.com' } as any;
 
   it('redirects away from /login to home', () => {
@@ -88,7 +88,7 @@ describe('useProtectedRoute — authenticated user', () => {
   });
 });
 
-describe('useProtectedRoute — guest user', () => {
+describe('guest user', () => {
   it('allows guest access to a protected screen', () => {
     useAuthStore.setState({
       initialized: true,
@@ -114,7 +114,7 @@ describe('useProtectedRoute — guest user', () => {
   });
 });
 
-describe('useProtectedRoute — password reset required', () => {
+describe('password reset required', () => {
   const fakeUser = { id: 'u1' } as any;
 
   it('redirects to /reset-password from a non-reset screen', () => {
