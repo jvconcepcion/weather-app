@@ -67,6 +67,7 @@ export function Chip({
         onPress={onActionPress}
         accessibilityRole="button"
         accessibilityLabel={actionAccessibilityLabel}
+        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         style={{
           paddingLeft: 6,
           paddingRight: 12,

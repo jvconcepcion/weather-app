@@ -21,6 +21,7 @@ export function PageHeader({ title }: PageHeaderProps) {
         onPress={() => router.replace('/')}
         accessibilityRole="button"
         accessibilityLabel="Go back"
+        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
       >
         <MaterialCommunityIcons name="arrow-left" size={28} color="white" />
       </TouchableOpacity>

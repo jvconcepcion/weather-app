@@ -1,8 +1,13 @@
+import type { ComponentProps } from 'react';
+import type { MaterialCommunityIcons } from '@expo/vector-icons';
+
+export type MaterialIconName = ComponentProps<typeof MaterialCommunityIcons>['name'];
+
 export type WMOCondition = 'clear' | 'cloudy' | 'rainy' | 'snowy' | 'stormy' | 'foggy';
 
 export type WMOEntry = {
   label: string;
-  icon: string;
+  icon: MaterialIconName;
   condition: WMOCondition;
 };
 

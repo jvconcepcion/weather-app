@@ -1,9 +1,9 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Image } from 'expo-image';
 import { useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Dimensions,
-  Image,
   Modal,
   Pressable,
   Text,
@@ -174,7 +174,11 @@ export function ProfileMenuButton({
       >
         {user ? (
           avatarUrl ? (
-            <Image source={{ uri: avatarUrl }} className="h-11 w-11 rounded-full" />
+            <Image
+              source={{ uri: avatarUrl }}
+              contentFit="cover"
+              className="h-11 w-11 rounded-full"
+            />
           ) : (
             <Text className="text-[15px] font-bold text-white">{initial}</Text>
           )

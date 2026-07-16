@@ -39,11 +39,7 @@ export function DailyForecast({ data }: DailyForecastProps) {
             className={`flex-row items-center py-3 ${!isLast ? 'border-b border-white/10' : ''}`}
           >
             <Text className="w-14 font-medium text-white/80">{dayName}</Text>
-            <MaterialCommunityIcons
-              name={wmo.icon as any}
-              size={22}
-              color="rgba(255,255,255,0.75)"
-            />
+            <MaterialCommunityIcons name={wmo.icon} size={22} color="rgba(255,255,255,0.75)" />
             <Text className="ml-auto mr-3 text-sm text-white/50">
               {Math.round(data.temperature_2m_min[i])}°
             </Text>

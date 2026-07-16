@@ -49,7 +49,7 @@ export function HourlyForecast({ data }: HourlyForecastProps) {
           return (
             <View key={time} className="mx-3 items-center">
               <Text className="mb-2 text-xs text-white/60">{formatHour(time)}</Text>
-              <MaterialCommunityIcons name={wmo.icon as any} size={24} color="white" />
+              <MaterialCommunityIcons name={wmo.icon} size={24} color="white" />
               <Text className="mt-2 text-sm font-semibold text-white">
                 {Math.round(data.temperature_2m[index])}°
               </Text>

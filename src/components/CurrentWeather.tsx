@@ -25,7 +25,7 @@ export function CurrentWeather({ data, cityName }: CurrentWeatherProps) {
     <View className="items-center py-8">
       <Text className="text-lg font-medium text-white/80">{cityName}</Text>
       <MaterialCommunityIcons
-        name={wmo.icon as any}
+        name={wmo.icon}
         size={100}
         color="white"
         style={{ marginVertical: 16 }}
