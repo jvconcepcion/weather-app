@@ -1,0 +1,133 @@
+{
+  "common": {
+    "tryAgain": "Try Again",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "clear": "Clear",
+    "ok": "OK"
+  },
+  "home": {
+    "recentSearches": "Recent Searches",
+    "offlineBanner": "No internet connection.",
+    "offlineBannerSub": "Showing the last saved weather update.",
+    "locationAccessNeeded": "Location access needed",
+    "couldNotGetLocation": "Couldn't get your location",
+    "locationPermissionMsg": "Weather App uses your location to show local weather. Enable it in Settings to continue.",
+    "locationErrorMsg": "Something went wrong while fetching your location. Check your connection and try again.",
+    "openSettings": "Open Settings",
+    "searchManually": "Search manually instead →",
+    "currentLocation": "Current location"
+  },
+  "search": {
+    "placeholder": "Search city...",
+    "noResults": "No results found"
+  },
+  "weather": {
+    "feelsLike": "Feels like {{temp}}",
+    "hourlyForecast": "Hourly Forecast",
+    "dailyForecast": "8-Day Forecast",
+    "noForecastAvailable": "No forecast available",
+    "today": "Today",
+    "humidity": "Humidity",
+    "wind": "Wind",
+    "precip": "Precip.",
+    "uvIndex": "UV Index",
+    "sunrise": "Sunrise",
+    "sunset": "Sunset"
+  },
+  "profile": {
+    "openMenu": "Open profile menu",
+    "browsingAsGuest": "Browsing as guest",
+    "userFallback": "User",
+    "logIn": "Log in",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "signOutConfirmTitle": "Are you sure to sign out?",
+    "removeFromFavorites": "Remove from favorites",
+    "addToFavorites": "Add to favorites"
+  },
+  "chip": {
+    "remove": "Remove"
+  },
+  "settings": {
+    "title": "Settings",
+    "preferences": "Preferences",
+    "temperatureUnit": "Temperature unit",
+    "temperatureUnitSub": "Choose how temperature is displayed",
+    "haptics": "Haptics",
+    "hapticsSub": "Enable vibration and touch feedback",
+    "data": "Data",
+    "clearFavorites": "Clear favorites",
+    "clearFavoritesSub": "Remove all saved favorite cities",
+    "clearFavoritesTitle": "Clear favorites?",
+    "clearFavoritesMsg": "This will remove all saved favorite cities.",
+    "clearRecentSearches": "Clear recent searches",
+    "clearRecentSearchesSub": "Remove saved city search history",
+    "clearRecentSearchesTitle": "Clear recent searches?",
+    "clearRecentSearchesMsg": "This will remove your saved city search history.",
+    "clearWeatherCache": "Clear weather cache",
+    "clearWeatherCacheSub": "Reset stored forecast and weather data",
+    "clearWeatherCacheTitle": "Clear weather cache?",
+    "clearWeatherCacheMsg": "This will reset stored forecast and weather data.",
+    "notifications": "Notifications",
+    "dailySummary": "Daily weather summary",
+    "comingSoon": "Coming soon...",
+    "expoPushToken": "EXPO PUSH TOKEN",
+    "expoPushTokenDesc": "Use this token at expo.dev/notifications to send a test push notification.",
+    "shareToken": "Share token",
+    "registeringPush": "Registering for push notifications...",
+    "language": "Language",
+    "languageSub": "Choose your preferred display language",
+    "languageAuto": "Auto (device language)"
+  },
+  "auth": {
+    "appName": "Weather App",
+    "emailPlaceholder": "Email address",
+    "passwordPlaceholder": "Password",
+    "confirmPasswordPlaceholder": "Confirm password",
+    "forgotPassword": "Forgot password?",
+    "sendResetLink": "Send reset link",
+    "createAccount": "Create account",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "or": "or",
+    "continueWithGoogle": "Continue with Google",
+    "continueAsGuest": "Continue as guest",
+    "backToSignIn": "Back to sign in",
+    "resetPassword": "Reset password",
+    "resetPasswordSub": "Use your account email to reset your password.",
+    "setNewPassword": "Set new password",
+    "setNewPasswordSub": "Choose a strong password for your account.",
+    "newPassword": "New password",
+    "confirmNewPassword": "Confirm new password",
+    "updatePassword": "Update password",
+    "passwordUpdated": "Password updated!",
+    "takingYouBack": "Taking you back to the app…",
+    "errors": {
+      "emailRequired": "Please enter your email.",
+      "passwordRequired": "Please enter your password.",
+      "passwordsDoNotMatch": "Passwords do not match.",
+      "newPasswordRequired": "Please enter a new password."
+    },
+    "success": {
+      "resetLinkSent": "Reset link sent — check your inbox.",
+      "accountCreated": "Account created! Check your email to confirm before signing in."
+    }
+  },
+  "about": {
+    "title": "About",
+    "version": "Version {{version}}",
+    "copyright": "Copyright © {{year}} Jonathan Concepcion.\nAll rights reserved.",
+    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Privacy Policy",
+    "ossNotice": "Open Source Software Notice"
+  },
+  "location": {
+    "title": "Location",
+    "notFound": "Location not found"
+  },
+  "errorBoundary": {
+    "title": "Something went wrong",
+    "tryAgain": "Try again"
+  }
+}

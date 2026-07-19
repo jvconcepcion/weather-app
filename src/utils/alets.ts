@@ -1,3 +1,4 @@
+import i18next from '../i18n';
 import { Alert } from 'react-native';
 
 type ConfirmAlertOptions = {
@@ -12,15 +13,17 @@ type ConfirmAlertOptions = {
 export function showConfirmAlert({
   title,
   message,
-  confirmText = 'Confirm',
-  cancelText = 'Cancel',
+  confirmText,
+  cancelText,
   destructive = true,
   onConfirm,
 }: ConfirmAlertOptions) {
+  const resolvedConfirmText = confirmText ?? i18next.t('common.confirm');
+  const resolvedCancelText = cancelText ?? i18next.t('common.cancel');
   Alert.alert(title, message, [
-    { text: cancelText, style: 'cancel' },
+    { text: resolvedCancelText, style: 'cancel' },
     {
-      text: confirmText,
+      text: resolvedConfirmText,
       style: destructive ? 'destructive' : 'default',
       onPress: async () => {
         void onConfirm();

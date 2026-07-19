@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { sendPasswordReset, signInWithEmail, signUpWithEmail } from '../lib/emailAuth';
 import { signInWithGoogle } from '../lib/googleSignIn';
 import { useAuthStore } from '../store/useAuthStore';
@@ -6,6 +7,7 @@ import { useAuthStore } from '../store/useAuthStore';
 export type AuthMode = 'signin' | 'signup' | 'forgot';
 
 export function useLoginForm() {
+  const { t } = useTranslation();
   const [mode, setMode] = useState<AuthMode>('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,7 +32,7 @@ export function useLoginForm() {
     const trimmedEmail = email.trim();
 
     if (!trimmedEmail) {
-      setError('Please enter your email.');
+      setError(t('auth.errors.emailRequired'));
       return;
     }
 
@@ -42,25 +44,25 @@ export function useLoginForm() {
         setError(error);
         return;
       }
-      setSuccessMsg('Reset link sent — check your inbox.');
+      setSuccessMsg(t('auth.success.resetLinkSent'));
       return;
     }
 
     if (!password) {
-      setError('Please enter your password.');
+      setError(t('auth.errors.passwordRequired'));
       return;
     }
 
     if (mode === 'signup') {
       if (password !== confirmPassword) {
-        setError('Passwords do not match.');
+        setError(t('auth.errors.passwordsDoNotMatch'));
         return;
       }
       setLoading(true);
       const { error } = await signUpWithEmail(trimmedEmail, password);
       setLoading(false);
       if (error === 'confirm_email') {
-        setSuccessMsg('Account created! Check your email to confirm before signing in.');
+        setSuccessMsg(t('auth.success.accountCreated'));
         return;
       }
       if (error) {
@@ -85,7 +87,11 @@ export function useLoginForm() {
   }
 
   const primaryLabel =
-    mode === 'forgot' ? 'Send reset link' : mode === 'signup' ? 'Create account' : 'Sign in';
+    mode === 'forgot'
+      ? t('auth.sendResetLink')
+      : mode === 'signup'
+        ? t('auth.createAccount')
+        : t('auth.signIn');
 
   return {
     mode,

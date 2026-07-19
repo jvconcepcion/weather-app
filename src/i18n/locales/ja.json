@@ -1,0 +1,133 @@
+{
+  "common": {
+    "tryAgain": "再試行",
+    "cancel": "キャンセル",
+    "confirm": "確認",
+    "clear": "クリア",
+    "ok": "OK"
+  },
+  "home": {
+    "recentSearches": "最近の検索",
+    "offlineBanner": "インターネット接続がありません。",
+    "offlineBannerSub": "最後に保存された天気の更新を表示しています。",
+    "locationAccessNeeded": "位置情報へのアクセスが必要です",
+    "couldNotGetLocation": "現在地を取得できませんでした",
+    "locationPermissionMsg": "天気アプリは現地の天気を表示するために位置情報を使用します。続けるには設定で有効にしてください。",
+    "locationErrorMsg": "位置情報の取得中にエラーが発生しました。接続を確認してもう一度お試しください。",
+    "openSettings": "設定を開く",
+    "searchManually": "手動で検索 →",
+    "currentLocation": "現在地"
+  },
+  "search": {
+    "placeholder": "都市を検索...",
+    "noResults": "結果が見つかりません"
+  },
+  "weather": {
+    "feelsLike": "体感温度 {{temp}}",
+    "hourlyForecast": "時間別予報",
+    "dailyForecast": "8日間予報",
+    "noForecastAvailable": "予報がありません",
+    "today": "今日",
+    "humidity": "湿度",
+    "wind": "風速",
+    "precip": "降水量",
+    "uvIndex": "UV指数",
+    "sunrise": "日の出",
+    "sunset": "日の入り"
+  },
+  "profile": {
+    "openMenu": "プロフィールメニューを開く",
+    "browsingAsGuest": "ゲストとして閲覧中",
+    "userFallback": "ユーザー",
+    "logIn": "ログイン",
+    "signIn": "ログイン",
+    "signOut": "サインアウト",
+    "signOutConfirmTitle": "サインアウトしますか？",
+    "removeFromFavorites": "お気に入りから削除",
+    "addToFavorites": "お気に入りに追加"
+  },
+  "chip": {
+    "remove": "削除"
+  },
+  "settings": {
+    "title": "設定",
+    "preferences": "環境設定",
+    "temperatureUnit": "温度単位",
+    "temperatureUnitSub": "温度の表示方法を選択",
+    "haptics": "ハプティクス",
+    "hapticsSub": "振動とタッチフィードバックを有効にする",
+    "data": "データ",
+    "clearFavorites": "お気に入りをクリア",
+    "clearFavoritesSub": "保存済みのお気に入り都市をすべて削除",
+    "clearFavoritesTitle": "お気に入りをクリアしますか？",
+    "clearFavoritesMsg": "保存済みのお気に入り都市がすべて削除されます。",
+    "clearRecentSearches": "最近の検索をクリア",
+    "clearRecentSearchesSub": "保存済みの都市検索履歴を削除",
+    "clearRecentSearchesTitle": "最近の検索をクリアしますか？",
+    "clearRecentSearchesMsg": "保存済みの都市検索履歴が削除されます。",
+    "clearWeatherCache": "天気キャッシュをクリア",
+    "clearWeatherCacheSub": "保存済みの予報と天気データをリセット",
+    "clearWeatherCacheTitle": "天気キャッシュをクリアしますか？",
+    "clearWeatherCacheMsg": "保存済みの予報と天気データがリセットされます。",
+    "notifications": "通知",
+    "dailySummary": "毎日の天気サマリー",
+    "comingSoon": "近日公開...",
+    "expoPushToken": "EXPOプッシュトークン",
+    "expoPushTokenDesc": "expo.dev/notificationsでこのトークンを使用してテストプッシュ通知を送信してください。",
+    "shareToken": "トークンを共有",
+    "registeringPush": "プッシュ通知を登録中...",
+    "language": "言語",
+    "languageSub": "表示言語を選択",
+    "languageAuto": "自動（端末の言語）"
+  },
+  "auth": {
+    "appName": "天気アプリ",
+    "emailPlaceholder": "メールアドレス",
+    "passwordPlaceholder": "パスワード",
+    "confirmPasswordPlaceholder": "パスワードの確認",
+    "forgotPassword": "パスワードをお忘れですか？",
+    "sendResetLink": "リセットリンクを送信",
+    "createAccount": "アカウントを作成",
+    "signIn": "ログイン",
+    "signUp": "サインアップ",
+    "or": "または",
+    "continueWithGoogle": "Googleで続ける",
+    "continueAsGuest": "ゲストとして続ける",
+    "backToSignIn": "ログインに戻る",
+    "resetPassword": "パスワードをリセット",
+    "resetPasswordSub": "アカウントのメールアドレスを使用してパスワードをリセットしてください。",
+    "setNewPassword": "新しいパスワードを設定",
+    "setNewPasswordSub": "アカウントの強力なパスワードを選択してください。",
+    "newPassword": "新しいパスワード",
+    "confirmNewPassword": "新しいパスワードの確認",
+    "updatePassword": "パスワードを更新",
+    "passwordUpdated": "パスワードが更新されました！",
+    "takingYouBack": "アプリに戻ります…",
+    "errors": {
+      "emailRequired": "メールアドレスを入力してください。",
+      "passwordRequired": "パスワードを入力してください。",
+      "passwordsDoNotMatch": "パスワードが一致しません。",
+      "newPasswordRequired": "新しいパスワードを入力してください。"
+    },
+    "success": {
+      "resetLinkSent": "リセットリンクを送信しました。受信トレイを確認してください。",
+      "accountCreated": "アカウントが作成されました！ログインする前にメールを確認してください。"
+    }
+  },
+  "about": {
+    "title": "アプリについて",
+    "version": "バージョン {{version}}",
+    "copyright": "Copyright © {{year}} Jonathan Concepcion.\n全著作権所有。",
+    "termsOfService": "利用規約",
+    "privacyPolicy": "プライバシーポリシー",
+    "ossNotice": "オープンソースソフトウェア通知"
+  },
+  "location": {
+    "title": "場所",
+    "notFound": "場所が見つかりません"
+  },
+  "errorBoundary": {
+    "title": "エラーが発生しました",
+    "tryAgain": "再試行"
+  }
+}
