@@ -1,4 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 import type { CurrentWeather } from '../services/weather';
 import { GlassCard } from './GlassCard';
@@ -17,37 +18,6 @@ const getWindDirection = (degrees?: number | null) => {
   return DIRECTIONS[index];
 };
 
-const STATS = [
-  {
-    key: 'relative_humidity_2m',
-    icon: 'water-percent',
-    label: 'Humidity',
-    format: (v?: number | null) => (typeof v === 'number' && Number.isFinite(v) ? `${v}%` : '--'),
-  },
-  {
-    key: 'wind_speed_10m',
-    icon: 'weather-windy',
-    label: 'Wind',
-    format: (v?: number | null, data?: CurrentWeather) =>
-      typeof v === 'number' && Number.isFinite(v)
-        ? `${Math.round(v)} km/h ${getWindDirection(data?.wind_direction_10m)}`.trim()
-        : '--',
-  },
-  {
-    key: 'precipitation',
-    icon: 'umbrella-outline',
-    label: 'Precip.',
-    format: (v?: number | null) => (typeof v === 'number' && Number.isFinite(v) ? `${v} mm` : '--'),
-  },
-  {
-    key: 'uv_index',
-    icon: 'white-balance-sunny',
-    label: 'UV Index',
-    format: (v?: number | null) =>
-      typeof v === 'number' && Number.isFinite(v) ? String(Math.round(v)) : '--',
-  },
-] as const;
-
 const formatTime = (time?: string) => {
   if (!time) return 'N/A';
 
@@ -63,11 +33,45 @@ const formatTime = (time?: string) => {
 };
 
 export function WeatherStats({ data, sunrise, sunset }: WeatherStatsProps) {
+  const { t } = useTranslation();
+
+  const stats = [
+    {
+      key: 'relative_humidity_2m' as const,
+      icon: 'water-percent' as const,
+      label: t('weather.humidity'),
+      format: (v?: number | null) => (typeof v === 'number' && Number.isFinite(v) ? `${v}%` : '--'),
+    },
+    {
+      key: 'wind_speed_10m' as const,
+      icon: 'weather-windy' as const,
+      label: t('weather.wind'),
+      format: (v?: number | null, d?: CurrentWeather) =>
+        typeof v === 'number' && Number.isFinite(v)
+          ? `${Math.round(v)} km/h ${getWindDirection(d?.wind_direction_10m)}`.trim()
+          : '--',
+    },
+    {
+      key: 'precipitation' as const,
+      icon: 'umbrella-outline' as const,
+      label: t('weather.precip'),
+      format: (v?: number | null) =>
+        typeof v === 'number' && Number.isFinite(v) ? `${v} mm` : '--',
+    },
+    {
+      key: 'uv_index' as const,
+      icon: 'white-balance-sunny' as const,
+      label: t('weather.uvIndex'),
+      format: (v?: number | null) =>
+        typeof v === 'number' && Number.isFinite(v) ? String(Math.round(v)) : '--',
+    },
+  ];
+
   return (
     <GlassCard className="p-4">
       <View className="w-full flex-row justify-between">
-        {STATS.map((stat) => (
-          <View key={stat.label} className="flex-1 items-center">
+        {stats.map((stat) => (
+          <View key={stat.key} className="flex-1 items-center">
             <MaterialCommunityIcons name={stat.icon} size={22} color="rgba(255,255,255,0.8)" />
             <Text className="mt-1 font-semibold text-white">
               {stat.format(data[stat.key], data)}
@@ -85,7 +89,7 @@ export function WeatherStats({ data, sunrise, sunset }: WeatherStatsProps) {
             color="rgba(255,255,255,0.8)"
           />
           <Text className="mt-1 font-semibold text-white">{formatTime(sunrise)}</Text>
-          <Text className="mt-0.5 text-xs text-white/60">Sunrise</Text>
+          <Text className="mt-0.5 text-xs text-white/60">{t('weather.sunrise')}</Text>
         </View>
 
         <View className="flex-1 items-center">
@@ -95,7 +99,7 @@ export function WeatherStats({ data, sunrise, sunset }: WeatherStatsProps) {
             color="rgba(255,255,255,0.8)"
           />
           <Text className="mt-1 font-semibold text-white">{formatTime(sunset)}</Text>
-          <Text className="mt-0.5 text-xs text-white/60">Sunset</Text>
+          <Text className="mt-0.5 text-xs text-white/60">{t('weather.sunset')}</Text>
         </View>
       </View>
     </GlassCard>

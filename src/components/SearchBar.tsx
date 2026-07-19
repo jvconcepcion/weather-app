@@ -2,10 +2,12 @@ import { triggerLightImpact } from '@/utils/haptics';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { searchLocations, type GeocodingResult } from '../services/geocoding';
 
 export function SearchBar() {
+  const { t } = useTranslation();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<GeocodingResult[]>([]);
   const [loading, setLoading] = useState(false);
@@ -65,7 +67,7 @@ export function SearchBar() {
         <MaterialCommunityIcons name="magnify" size={20} color="rgba(255,255,255,0.7)" />
         <TextInput
           className="ml-2 flex-1 text-base text-white"
-          placeholder="Search city..."
+          placeholder={t('search.placeholder')}
           placeholderTextColor="rgba(255,255,255,0.5)"
           value={query}
           onChangeText={setQuery}
@@ -99,7 +101,7 @@ export function SearchBar() {
             ))
           ) : (
             <View className="px-4 py-4">
-              <Text className="text-sm text-white/60">No results found</Text>
+              <Text className="text-sm text-white/60">{t('search.noResults')}</Text>
             </View>
           )}
         </View>

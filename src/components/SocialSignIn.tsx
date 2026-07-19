@@ -1,4 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 
 interface Props {
@@ -9,11 +10,12 @@ interface Props {
 }
 
 export function SocialSignIn({ googleLoading, disabled, onGoogleSignIn, onGuestSignIn }: Props) {
+  const { t } = useTranslation();
   return (
     <>
       <View className="my-6 flex-row items-center gap-3">
         <View className="h-px flex-1 bg-white/10" />
-        <Text className="text-xs text-white/30">or</Text>
+        <Text className="text-xs text-white/30">{t('auth.or')}</Text>
         <View className="h-px flex-1 bg-white/10" />
       </View>
 
@@ -28,13 +30,15 @@ export function SocialSignIn({ googleLoading, disabled, onGoogleSignIn, onGuestS
         ) : (
           <>
             <MaterialCommunityIcons name="google" size={20} color="#EA4335" />
-            <Text className="text-[15px] font-medium text-white">Continue with Google</Text>
+            <Text className="text-[15px] font-medium text-white">
+              {t('auth.continueWithGoogle')}
+            </Text>
           </>
         )}
       </TouchableOpacity>
 
       <TouchableOpacity onPress={onGuestSignIn} className="mt-5 items-center">
-        <Text className="text-sm text-slate-500">Continue as guest</Text>
+        <Text className="text-sm text-slate-500">{t('auth.continueAsGuest')}</Text>
       </TouchableOpacity>
     </>
   );
