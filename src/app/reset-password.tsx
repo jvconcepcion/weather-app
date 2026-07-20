@@ -1,5 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -15,6 +16,7 @@ import { updatePassword } from '../lib/emailAuth';
 import { useAuthStore } from '../store/useAuthStore';
 
 export default function ResetPasswordScreen() {
+  const { t } = useTranslation();
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -27,12 +29,12 @@ export default function ResetPasswordScreen() {
     setError(null);
 
     if (!password) {
-      setError('Please enter a new password.');
+      setError(t('auth.errors.newPasswordRequired'));
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match.');
+      setError(t('auth.errors.passwordsDoNotMatch'));
       return;
     }
 
@@ -66,10 +68,10 @@ export default function ResetPasswordScreen() {
               <View className="h-16 w-16 items-center justify-center rounded-full bg-emerald-500/10">
                 <MaterialCommunityIcons name="check-circle-outline" size={40} color="#34d399" />
               </View>
-              <Text className="text-center text-xl font-bold text-white">Password updated!</Text>
-              <Text className="text-center text-sm text-slate-400">
-                Taking you back to the app…
+              <Text className="text-center text-xl font-bold text-white">
+                {t('auth.passwordUpdated')}
               </Text>
+              <Text className="text-center text-sm text-slate-400">{t('auth.takingYouBack')}</Text>
             </View>
           ) : (
             <>
@@ -77,23 +79,23 @@ export default function ResetPasswordScreen() {
                 <View className="h-16 w-16 items-center justify-center rounded-full bg-violet-600/10">
                   <MaterialCommunityIcons name="lock-reset" size={36} color="#7c3aed" />
                 </View>
-                <Text className="text-2xl font-bold text-white">Set new password</Text>
+                <Text className="text-2xl font-bold text-white">{t('auth.setNewPassword')}</Text>
                 <Text className="text-center text-sm text-slate-400">
-                  Choose a strong password for your account.
+                  {t('auth.setNewPasswordSub')}
                 </Text>
               </View>
 
               <View className="gap-3">
                 <AuthInput
                   icon="lock-outline"
-                  placeholder="New password"
+                  placeholder={t('auth.newPassword')}
                   value={password}
                   onChangeText={setPassword}
                   secureTextEntry
                 />
                 <AuthInput
                   icon="lock-check-outline"
-                  placeholder="Confirm new password"
+                  placeholder={t('auth.confirmNewPassword')}
                   value={confirmPassword}
                   onChangeText={setConfirmPassword}
                   secureTextEntry
@@ -113,7 +115,9 @@ export default function ResetPasswordScreen() {
                 {loading ? (
                   <ActivityIndicator color="white" />
                 ) : (
-                  <Text className="text-[15px] font-semibold text-white">Update password</Text>
+                  <Text className="text-[15px] font-semibold text-white">
+                    {t('auth.updatePassword')}
+                  </Text>
                 )}
               </TouchableOpacity>
             </>

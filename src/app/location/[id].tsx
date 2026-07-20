@@ -1,5 +1,6 @@
 import { WeatherSkeleton } from '@/components/WeatherSkeleton';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
@@ -17,6 +18,7 @@ import { useWeather } from '../../hooks/useWeather';
 import { useAppStore, type City } from '../../store/useAppStore';
 
 export default function LocationScreen() {
+  const { t } = useTranslation();
   const router = useRouter();
   const favorites = useAppStore((state) => state.favorites);
   const addFavorites = useAppStore((state) => state.addFavorite);
@@ -102,7 +104,7 @@ export default function LocationScreen() {
     return (
       <LinearGradient colors={NIGHT_GRADIENT} style={{ flex: 1 }}>
         <SafeAreaView style={{ flex: 1 }}>
-          <PageHeader title="Location" />
+          <PageHeader title={t('location.title')} />
           <View
             style={{
               flex: 1,
@@ -111,7 +113,7 @@ export default function LocationScreen() {
               paddingHorizontal: 24,
             }}
           >
-            <Text className="text-center text-white">Location not found</Text>
+            <Text className="text-center text-white">{t('location.notFound')}</Text>
           </View>
         </SafeAreaView>
       </LinearGradient>
@@ -138,7 +140,9 @@ export default function LocationScreen() {
             onPress={handleToggleFavorite}
             hitSlop={10}
             accessibilityRole="button"
-            accessibilityLabel={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+            accessibilityLabel={
+              isFavorite ? t('profile.removeFromFavorites') : t('profile.addToFavorites')
+            }
           >
             <MaterialCommunityIcons
               name={isFavorite ? 'star' : 'star-outline'}
@@ -169,7 +173,7 @@ export default function LocationScreen() {
                 onPress={handleRefresh}
                 className="m-2 rounded-md border border-white px-4 py-2"
               >
-                <Text className="text-white">Try Again</Text>
+                <Text className="text-white">{t('common.tryAgain')}</Text>
               </TouchableOpacity>
             </View>
           ) : weather.data ? (

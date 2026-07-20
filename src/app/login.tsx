@@ -1,4 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -18,6 +19,7 @@ import { useBreakpoint } from '../hooks/useBreakpoint';
 import { useLoginForm } from '../hooks/useLoginForm';
 
 export default function LoginScreen() {
+  const { t } = useTranslation();
   const {
     mode,
     email,
@@ -63,7 +65,7 @@ export default function LoginScreen() {
                 size={isTablet ? 88 : 68}
                 color="#7c3aed"
               />
-              <Text className="mt-3 text-[26px] font-bold text-white">Weather App</Text>
+              <Text className="mt-3 text-[26px] font-bold text-white">{t('auth.appName')}</Text>
             </View>
 
             {mode !== 'forgot' ? (
@@ -75,7 +77,7 @@ export default function LoginScreen() {
             <View className="gap-3">
               <AuthInput
                 icon="email-outline"
-                placeholder="Email address"
+                placeholder={t('auth.emailPlaceholder')}
                 value={email}
                 onChangeText={setEmail}
                 keyboardType="email-address"
@@ -83,7 +85,7 @@ export default function LoginScreen() {
               {mode !== 'forgot' && (
                 <AuthInput
                   icon="lock-outline"
-                  placeholder="Password"
+                  placeholder={t('auth.passwordPlaceholder')}
                   value={password}
                   onChangeText={setPassword}
                   secureTextEntry
@@ -92,7 +94,7 @@ export default function LoginScreen() {
               {mode === 'signup' && (
                 <AuthInput
                   icon="lock-check-outline"
-                  placeholder="Confirm password"
+                  placeholder={t('auth.confirmPasswordPlaceholder')}
                   value={confirmPassword}
                   onChangeText={setConfirmPassword}
                   secureTextEntry
@@ -102,7 +104,7 @@ export default function LoginScreen() {
 
             {mode === 'signin' && (
               <TouchableOpacity onPress={() => switchMode('forgot')} className="mt-2.5 self-end">
-                <Text className="text-xs text-violet-400">Forgot password?</Text>
+                <Text className="text-xs text-violet-400">{t('auth.forgotPassword')}</Text>
               </TouchableOpacity>
             )}
 
