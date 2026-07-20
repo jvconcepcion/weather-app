@@ -1,6 +1,7 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ActivityIndicator,
   Dimensions,
@@ -58,6 +59,7 @@ function SignOutConfirmModal({
   onConfirm,
   onCancel,
 }: SignOutConfirmModalProps) {
+  const { t } = useTranslation();
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onCancel}>
       <Pressable onPress={onCancel} className="flex-1 items-center justify-center bg-black/60">
@@ -77,7 +79,7 @@ function SignOutConfirmModal({
               <MaterialCommunityIcons name="logout" size={24} color="#f87171" />
             </View>
             <Text className="mb-1 text-center text-[17px] font-bold text-white">
-              Are you sure to sign out?
+              {t('profile.signOutConfirmTitle')}
             </Text>
           </View>
 
@@ -91,7 +93,7 @@ function SignOutConfirmModal({
               {signingOut ? (
                 <ActivityIndicator color="white" size="small" />
               ) : (
-                <Text className="text-[15px] font-semibold text-white">Sign out</Text>
+                <Text className="text-[15px] font-semibold text-white">{t('profile.signOut')}</Text>
               )}
             </TouchableOpacity>
 
@@ -101,7 +103,7 @@ function SignOutConfirmModal({
               activeOpacity={0.7}
               className="items-center py-3"
             >
-              <Text className="text-[15px] text-slate-400">Cancel</Text>
+              <Text className="text-[15px] text-slate-400">{t('common.cancel')}</Text>
             </TouchableOpacity>
           </View>
         </Pressable>
@@ -115,6 +117,7 @@ export function ProfileMenuButton({
   onSettingsPress,
   onAboutPress,
 }: ProfileMenuButtonProps) {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [menuPos, setMenuPos] = useState({ top: 0, right: 0 });
   const [showSignOutConfirm, setShowSignOutConfirm] = useState(false);
@@ -169,7 +172,7 @@ export function ProfileMenuButton({
         onPress={openMenu}
         activeOpacity={0.85}
         accessibilityRole="button"
-        accessibilityLabel="Open profile menu"
+        accessibilityLabel={t('profile.openMenu')}
         className={`h-11 w-11 items-center justify-center rounded-full border ${user ? 'border-violet-600/60 bg-violet-600' : 'border-white/[0.18] bg-white/[0.14]'}`}
       >
         {user ? (
@@ -212,7 +215,7 @@ export function ProfileMenuButton({
                 <>
                   <View className="mb-1 border-b border-white/[0.08] px-3 pb-2.5 pt-2">
                     <Text className="text-sm font-semibold text-white" numberOfLines={1}>
-                      {fullName || 'User'}
+                      {fullName || t('profile.userFallback')}
                     </Text>
                     <Text className="mt-0.5 text-xs text-slate-500" numberOfLines={1}>
                       {email}
@@ -220,25 +223,32 @@ export function ProfileMenuButton({
                   </View>
                   <MenuItem
                     icon="cog-outline"
-                    label="Settings"
+                    label={t('settings.title')}
                     onPress={() => handlePress(onSettingsPress)}
                   />
                   <MenuItem
                     icon="information-outline"
-                    label="About"
+                    label={t('about.title')}
                     onPress={() => handlePress(onAboutPress)}
                   />
                   <View className="my-1 h-px bg-white/[0.08]" />
-                  <MenuItem icon="logout" label="Sign out" onPress={handleSignOutPress} danger />
+                  <MenuItem
+                    icon="logout"
+                    label={t('profile.signOut')}
+                    onPress={handleSignOutPress}
+                    danger
+                  />
                 </>
               ) : isGuest ? (
                 <>
                   <View className="mb-1 border-b border-white/[0.08] px-3 pb-2.5 pt-2">
-                    <Text className="text-[13px] text-slate-400">Browsing as guest</Text>
+                    <Text className="text-[13px] text-slate-400">
+                      {t('profile.browsingAsGuest')}
+                    </Text>
                   </View>
                   <MenuItem
                     icon="login"
-                    label="Sign in"
+                    label={t('profile.signIn')}
                     onPress={() => {
                       closeMenu();
                       setGuest(false);
@@ -247,26 +257,30 @@ export function ProfileMenuButton({
                   />
                   <MenuItem
                     icon="cog-outline"
-                    label="Settings"
+                    label={t('settings.title')}
                     onPress={() => handlePress(onSettingsPress)}
                   />
                   <MenuItem
                     icon="information-outline"
-                    label="About"
+                    label={t('about.title')}
                     onPress={() => handlePress(onAboutPress)}
                   />
                 </>
               ) : (
                 <>
-                  <MenuItem icon="login" label="Log in" onPress={() => handlePress(onLoginPress)} />
+                  <MenuItem
+                    icon="login"
+                    label={t('profile.logIn')}
+                    onPress={() => handlePress(onLoginPress)}
+                  />
                   <MenuItem
                     icon="cog-outline"
-                    label="Settings"
+                    label={t('settings.title')}
                     onPress={() => handlePress(onSettingsPress)}
                   />
                   <MenuItem
                     icon="information-outline"
-                    label="About"
+                    label={t('about.title')}
                     onPress={() => handlePress(onAboutPress)}
                   />
                 </>

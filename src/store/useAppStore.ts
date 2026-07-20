@@ -22,6 +22,7 @@ export const getWeatherCacheKey = (lat: number, lon: number) => `${lat}|${lon}`;
 
 interface AppStore {
   unit: Unit;
+  language: string | null;
   favorites: City[];
   recentSearches: City[];
   weatherCache: Record<string, CachedWeatherEntry>;
@@ -31,6 +32,7 @@ interface AppStore {
   userId: string | null;
 
   setUnit: (unit: Unit) => void;
+  setLanguage: (lang: string | null) => void;
   setPushToken: (token: string | null) => void;
   setPushTokenError: (error: string | null) => void;
   setUserId: (userId: string | null) => void;
@@ -56,6 +58,7 @@ export const useAppStore = create<AppStore>()(
   persist(
     (set, get) => ({
       unit: 'celsius',
+      language: null,
       favorites: [],
       recentSearches: [],
       weatherCache: {},
@@ -65,6 +68,7 @@ export const useAppStore = create<AppStore>()(
       userId: null,
 
       setUnit: (unit) => set({ unit }),
+      setLanguage: (lang) => set({ language: lang }),
       setPushToken: (token) => set({ pushToken: token }),
       setPushTokenError: (error) => set({ pushTokenError: error }),
       setUserId: (userId) => set({ userId }),
@@ -193,6 +197,7 @@ export const useAppStore = create<AppStore>()(
       storage: createJSONStorage(() => AsyncStorage),
       partialize: (state) => ({
         unit: state.unit,
+        language: state.language,
         favorites: state.favorites,
         recentSearches: state.recentSearches,
         hapticsEnabled: state.hapticsEnabled,

@@ -8,8 +8,10 @@ import { Platform, Text, TouchableOpacity, View } from 'react-native';
 import { useProtectedRoute } from '../hooks/useProtectedRoute';
 import { usePushNotifications } from '../hooks/usePushNotifications';
 import { useSupabaseSync } from '../hooks/useSupabaseSync';
+import i18n, { resolveLocale } from '../i18n';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/useAuthStore';
+import { useAppStore } from '../store/useAppStore';
 import './globals.css';
 
 SplashScreen.preventAutoHideAsync();
@@ -26,7 +28,7 @@ export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
       }}
     >
       <Text style={{ fontSize: 18, fontWeight: '600', color: 'white', marginBottom: 8 }}>
-        Something went wrong
+        {i18n.t('errorBoundary.title')}
       </Text>
       <Text
         style={{
@@ -41,7 +43,7 @@ export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
       <TouchableOpacity
         onPress={retry}
         accessibilityRole="button"
-        accessibilityLabel="Try again"
+        accessibilityLabel={i18n.t('errorBoundary.tryAgain')}
         style={{
           paddingHorizontal: 24,
           paddingVertical: 12,
@@ -49,7 +51,9 @@ export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
           borderRadius: 12,
         }}
       >
-        <Text style={{ color: 'white', fontWeight: '600' }}>Try again</Text>
+        <Text style={{ color: 'white', fontWeight: '600' }}>
+          {i18n.t('errorBoundary.tryAgain')}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -73,6 +77,11 @@ export default function RootLayout() {
   const setInitialized = useAuthStore((state) => state.setInitialized);
   const setRequiresPasswordReset = useAuthStore((state) => state.setRequiresPasswordReset);
   const initialized = useAuthStore((state) => state.initialized);
+  const language = useAppStore((state) => state.language);
+
+  useEffect(() => {
+    i18n.changeLanguage(resolveLocale(language));
+  }, [language]);
 
   useEffect(() => {
     async function processUrl(url: string | null) {

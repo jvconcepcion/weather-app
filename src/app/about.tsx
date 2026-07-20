@@ -2,16 +2,18 @@ import { PageHeader } from '@/components/PageHeader';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Pressable, Text, View } from 'react-native';
 import { ScreenContainer } from '../components/ScreenContainer';
 
 export default function AboutScreen() {
+  const { t } = useTranslation();
   const router = useRouter();
 
   return (
     <ScreenContainer>
       <View className="flex-1 px-5 pb-7 pt-3">
-        <PageHeader title="About" />
+        <PageHeader title={t('about.title')} />
         <View
           style={{
             flex: 1,
@@ -29,7 +31,7 @@ export default function AboutScreen() {
               fontWeight: '600',
             }}
           >
-            Weather App
+            {t('auth.appName')}
           </Text>
 
           <Text
@@ -39,7 +41,7 @@ export default function AboutScreen() {
               fontSize: 12,
             }}
           >
-            Version 1.0.0
+            {t('about.version', { version: '1.0.0' })}
           </Text>
 
           <Text
@@ -51,7 +53,7 @@ export default function AboutScreen() {
               lineHeight: 18,
             }}
           >
-            Copyright © 2026 Jonathan Concepcion.{'\n'}All rights reserved.
+            {t('about.copyright', { year: new Date().getFullYear() })}
           </Text>
         </View>
 
@@ -70,7 +72,7 @@ export default function AboutScreen() {
                   textDecorationLine: 'underline',
                 }}
               >
-                Terms of Service
+                {t('about.termsOfService')}
               </Text>
             </Pressable>
 
@@ -92,7 +94,7 @@ export default function AboutScreen() {
                   textDecorationLine: 'underline',
                 }}
               >
-                Privacy Policy
+                {t('about.privacyPolicy')}
               </Text>
             </Pressable>
           </View>
@@ -105,7 +107,7 @@ export default function AboutScreen() {
                 textDecorationLine: 'underline',
               }}
             >
-              Open Source Software Notice
+              {t('about.ossNotice')}
             </Text>
           </Pressable>
         </View>

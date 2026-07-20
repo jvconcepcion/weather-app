@@ -1,6 +1,7 @@
 import { WeatherSkeleton } from '@/components/WeatherSkeleton';
 import { triggerLightImpact, triggerSuccessHaptic } from '@/utils/haptics';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
@@ -23,6 +24,7 @@ import { useWeather } from '../hooks/useWeather';
 import { useAppStore, type City } from '../store/useAppStore';
 
 export default function HomeScreen() {
+  const { t } = useTranslation();
   const [refreshKey, setRefreshKey] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
@@ -126,7 +128,9 @@ export default function HomeScreen() {
           {recentSearches.length > 0 && (
             <Animated.View entering={FadeIn.duration(400)} className="mb-5">
               <View className="mb-2.5 flex-row items-center justify-between">
-                <Text className="text-base font-semibold text-white">Recent Searches</Text>
+                <Text className="text-base font-semibold text-white">
+                  {t('home.recentSearches')}
+                </Text>
                 <TouchableOpacity
                   onPress={clearRecentSearches}
                   className="flex-row items-center gap-1.5 rounded-full border border-white/[0.12] bg-white/[0.08] px-2.5 py-1.5"
@@ -136,7 +140,7 @@ export default function HomeScreen() {
                     size={14}
                     color="rgba(255, 255, 255, 0.85)"
                   />
-                  <Text className="text-xs font-semibold text-white/85">Clear</Text>
+                  <Text className="text-xs font-semibold text-white/85">{t('common.clear')}</Text>
                 </TouchableOpacity>
               </View>
 
@@ -172,8 +176,8 @@ export default function HomeScreen() {
             <View className="mb-4 flex-row items-center rounded-2xl border border-white/20 bg-black/20 px-4 py-3">
               <View className="mr-3 h-2.5 w-2.5 rounded-full bg-yellow-300" />
               <Text className="flex-1 text-sm text-white">
-                No internet connection.{' '}
-                <Text className="text-white/80">Showing the last saved weather update.</Text>
+                {t('home.offlineBanner')}{' '}
+                <Text className="text-white/80">{t('home.offlineBannerSub')}</Text>
               </Text>
             </View>
           )}
@@ -191,33 +195,33 @@ export default function HomeScreen() {
               </View>
               <Text className="text-center text-xl font-bold text-white">
                 {location.permissionDenied
-                  ? 'Location access needed'
-                  : "Couldn't get your location"}
+                  ? t('home.locationAccessNeeded')
+                  : t('home.couldNotGetLocation')}
               </Text>
               <Text className="text-center text-sm text-white/60">
                 {location.permissionDenied
-                  ? 'Weather App uses your location to show local weather. Enable it in Settings to continue.'
-                  : 'Something went wrong while fetching your location. Check your connection and try again.'}
+                  ? t('home.locationPermissionMsg')
+                  : t('home.locationErrorMsg')}
               </Text>
               {location.permissionDenied ? (
                 <TouchableOpacity
                   onPress={() => Linking.openSettings()}
                   className="rounded-2xl border border-white/20 bg-white/15 px-6 py-3.5"
                 >
-                  <Text className="font-semibold text-white">Open Settings</Text>
+                  <Text className="font-semibold text-white">{t('home.openSettings')}</Text>
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
                   onPress={location.retry}
                   className="rounded-2xl border border-white/20 bg-white/15 px-6 py-3.5"
                 >
-                  <Text className="font-semibold text-white">Try Again</Text>
+                  <Text className="font-semibold text-white">{t('common.tryAgain')}</Text>
                 </TouchableOpacity>
               )}
               <TouchableOpacity
                 onPress={() => scrollViewRef.current?.scrollTo({ y: 0, animated: true })}
               >
-                <Text className="text-sm text-white/60">Search manually instead →</Text>
+                <Text className="text-sm text-white/60">{t('home.searchManually')}</Text>
               </TouchableOpacity>
             </View>
           ) : weather.error ? (
@@ -227,14 +231,14 @@ export default function HomeScreen() {
                 onPress={handleRefresh}
                 className="m-2 rounded-md border border-white px-4 py-2"
               >
-                <Text className="text-white">Try Again</Text>
+                <Text className="text-white">{t('common.tryAgain')}</Text>
               </TouchableOpacity>
             </View>
           ) : weather.data ? (
             <View className="gap-4">
               <CurrentWeather
                 data={weather.data.current}
-                cityName={location.cityName || 'Current location'}
+                cityName={location.cityName || t('home.currentLocation')}
               />
               <WeatherStats
                 data={weather.data.current}

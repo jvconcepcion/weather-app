@@ -1,4 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 import { getWMO } from '../constants/wmo';
 import type { CurrentWeather as CurrentWeatherData } from '../services/weather';
@@ -9,6 +10,7 @@ interface CurrentWeatherProps {
 }
 
 export function CurrentWeather({ data, cityName }: CurrentWeatherProps) {
+  const { t } = useTranslation();
   const wmo = getWMO(data.weather_code);
 
   const temperatureDisplay =
@@ -34,7 +36,9 @@ export function CurrentWeather({ data, cityName }: CurrentWeatherProps) {
         {temperatureDisplay}
       </Text>
       <Text className="mt-2 text-xl text-white/80">{wmo.label}</Text>
-      <Text className="mt-1 text-base text-white/60">Feels like {feesLikeDisplay}</Text>
+      <Text className="mt-1 text-base text-white/60">
+        {t('weather.feelsLike', { temp: feesLikeDisplay })}
+      </Text>
     </View>
   );
 }

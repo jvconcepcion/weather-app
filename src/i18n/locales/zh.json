@@ -1,0 +1,133 @@
+{
+  "common": {
+    "tryAgain": "重试",
+    "cancel": "取消",
+    "confirm": "确认",
+    "clear": "清除",
+    "ok": "确定"
+  },
+  "home": {
+    "recentSearches": "最近搜索",
+    "offlineBanner": "无网络连接。",
+    "offlineBannerSub": "显示最后保存的天气更新。",
+    "locationAccessNeeded": "需要位置访问权限",
+    "couldNotGetLocation": "无法获取您的位置",
+    "locationPermissionMsg": "天气应用使用您的位置来显示本地天气。请在设置中启用它以继续。",
+    "locationErrorMsg": "获取位置时出现错误。请检查您的连接并重试。",
+    "openSettings": "打开设置",
+    "searchManually": "手动搜索 →",
+    "currentLocation": "当前位置"
+  },
+  "search": {
+    "placeholder": "搜索城市...",
+    "noResults": "未找到结果"
+  },
+  "weather": {
+    "feelsLike": "体感温度 {{temp}}",
+    "hourlyForecast": "每小时预报",
+    "dailyForecast": "8天预报",
+    "noForecastAvailable": "暂无预报",
+    "today": "今天",
+    "humidity": "湿度",
+    "wind": "风速",
+    "precip": "降水量",
+    "uvIndex": "紫外线指数",
+    "sunrise": "日出",
+    "sunset": "日落"
+  },
+  "profile": {
+    "openMenu": "打开个人菜单",
+    "browsingAsGuest": "以访客身份浏览",
+    "userFallback": "用户",
+    "logIn": "登录",
+    "signIn": "登录",
+    "signOut": "退出登录",
+    "signOutConfirmTitle": "确定要退出吗？",
+    "removeFromFavorites": "从收藏中移除",
+    "addToFavorites": "添加到收藏"
+  },
+  "chip": {
+    "remove": "移除"
+  },
+  "settings": {
+    "title": "设置",
+    "preferences": "偏好设置",
+    "temperatureUnit": "温度单位",
+    "temperatureUnitSub": "选择温度显示方式",
+    "haptics": "触觉反馈",
+    "hapticsSub": "启用振动和触觉反馈",
+    "data": "数据",
+    "clearFavorites": "清除收藏",
+    "clearFavoritesSub": "删除所有已保存的收藏城市",
+    "clearFavoritesTitle": "清除收藏？",
+    "clearFavoritesMsg": "这将删除所有已保存的收藏城市。",
+    "clearRecentSearches": "清除最近搜索",
+    "clearRecentSearchesSub": "删除已保存的城市搜索历史",
+    "clearRecentSearchesTitle": "清除最近搜索？",
+    "clearRecentSearchesMsg": "这将删除您已保存的城市搜索历史。",
+    "clearWeatherCache": "清除天气缓存",
+    "clearWeatherCacheSub": "重置已存储的预报和天气数据",
+    "clearWeatherCacheTitle": "清除天气缓存？",
+    "clearWeatherCacheMsg": "这将重置已存储的预报和天气数据。",
+    "notifications": "通知",
+    "dailySummary": "每日天气摘要",
+    "comingSoon": "即将推出...",
+    "expoPushToken": "EXPO 推送令牌",
+    "expoPushTokenDesc": "在 expo.dev/notifications 使用此令牌发送测试推送通知。",
+    "shareToken": "分享令牌",
+    "registeringPush": "正在注册推送通知...",
+    "language": "语言",
+    "languageSub": "选择您偏好的显示语言",
+    "languageAuto": "自动（设备语言）"
+  },
+  "auth": {
+    "appName": "天气应用",
+    "emailPlaceholder": "电子邮件地址",
+    "passwordPlaceholder": "密码",
+    "confirmPasswordPlaceholder": "确认密码",
+    "forgotPassword": "忘记密码？",
+    "sendResetLink": "发送重置链接",
+    "createAccount": "创建账户",
+    "signIn": "登录",
+    "signUp": "注册",
+    "or": "或",
+    "continueWithGoogle": "使用 Google 继续",
+    "continueAsGuest": "以访客身份继续",
+    "backToSignIn": "返回登录",
+    "resetPassword": "重置密码",
+    "resetPasswordSub": "使用您的账户邮箱重置密码。",
+    "setNewPassword": "设置新密码",
+    "setNewPasswordSub": "为您的账户选择一个强密码。",
+    "newPassword": "新密码",
+    "confirmNewPassword": "确认新密码",
+    "updatePassword": "更新密码",
+    "passwordUpdated": "密码已更新！",
+    "takingYouBack": "正在返回应用…",
+    "errors": {
+      "emailRequired": "请输入您的电子邮件。",
+      "passwordRequired": "请输入您的密码。",
+      "passwordsDoNotMatch": "密码不匹配。",
+      "newPasswordRequired": "请输入新密码。"
+    },
+    "success": {
+      "resetLinkSent": "重置链接已发送，请查看您的收件箱。",
+      "accountCreated": "账户已创建！请查看您的电子邮件进行确认后再登录。"
+    }
+  },
+  "about": {
+    "title": "关于",
+    "version": "版本 {{version}}",
+    "copyright": "版权所有 © {{year}} Jonathan Concepcion。\n保留所有权利。",
+    "termsOfService": "服务条款",
+    "privacyPolicy": "隐私政策",
+    "ossNotice": "开源软件声明"
+  },
+  "location": {
+    "title": "位置",
+    "notFound": "未找到位置"
+  },
+  "errorBoundary": {
+    "title": "出现错误",
+    "tryAgain": "重试"
+  }
+}

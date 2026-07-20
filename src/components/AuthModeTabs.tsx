@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Text, TouchableOpacity, View } from 'react-native';
 import type { AuthMode } from '../hooks/useLoginForm';
 
@@ -7,6 +8,7 @@ interface Props {
 }
 
 export function AuthModeTabs({ mode, onSwitch }: Props) {
+  const { t } = useTranslation();
   return (
     <View className="mb-6 flex-row rounded-2xl border border-white/10 bg-white/[0.05] p-1">
       {(['signin', 'signup'] as const).map((tab) => (
@@ -19,7 +21,7 @@ export function AuthModeTabs({ mode, onSwitch }: Props) {
           <Text
             className={`text-[14px] font-semibold ${mode === tab ? 'text-white' : 'text-white/50'}`}
           >
-            {tab === 'signin' ? 'Sign in' : 'Sign up'}
+            {tab === 'signin' ? t('auth.signIn') : t('auth.signUp')}
           </Text>
         </TouchableOpacity>
       ))}

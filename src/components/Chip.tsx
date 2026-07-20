@@ -1,5 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import type { ComponentProps } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Text,
   TouchableOpacity,
@@ -29,11 +30,13 @@ export function Chip({
   onPress,
   onLongPress,
   onActionPress,
-  actionAccessibilityLabel = 'Remove',
+  actionAccessibilityLabel,
   containerStyle,
   titleStyle,
   actionIconColor = 'rgba(255, 255, 255, 0.85)',
 }: ChipProps) {
+  const { t } = useTranslation();
+  const resolvedAccessibilityLabel = actionAccessibilityLabel ?? t('chip.remove');
   return (
     <View
       style={[
@@ -66,7 +69,7 @@ export function Chip({
       <TouchableOpacity
         onPress={onActionPress}
         accessibilityRole="button"
-        accessibilityLabel={actionAccessibilityLabel}
+        accessibilityLabel={resolvedAccessibilityLabel}
         hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         style={{
           paddingLeft: 6,

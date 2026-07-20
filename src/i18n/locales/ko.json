@@ -1,0 +1,133 @@
+{
+  "common": {
+    "tryAgain": "다시 시도",
+    "cancel": "취소",
+    "confirm": "확인",
+    "clear": "지우기",
+    "ok": "확인"
+  },
+  "home": {
+    "recentSearches": "최근 검색",
+    "offlineBanner": "인터넷 연결이 없습니다.",
+    "offlineBannerSub": "마지막으로 저장된 날씨 업데이트를 표시합니다.",
+    "locationAccessNeeded": "위치 접근 권한 필요",
+    "couldNotGetLocation": "위치를 가져올 수 없습니다",
+    "locationPermissionMsg": "날씨 앱이 현지 날씨를 표시하려면 위치를 사용합니다. 계속하려면 설정에서 활성화하세요.",
+    "locationErrorMsg": "위치를 가져오는 중 오류가 발생했습니다. 연결을 확인하고 다시 시도하세요.",
+    "openSettings": "설정 열기",
+    "searchManually": "수동으로 검색 →",
+    "currentLocation": "현재 위치"
+  },
+  "search": {
+    "placeholder": "도시 검색...",
+    "noResults": "결과 없음"
+  },
+  "weather": {
+    "feelsLike": "체감 온도 {{temp}}",
+    "hourlyForecast": "시간별 예보",
+    "dailyForecast": "8일 예보",
+    "noForecastAvailable": "예보를 사용할 수 없습니다",
+    "today": "오늘",
+    "humidity": "습도",
+    "wind": "바람",
+    "precip": "강수량",
+    "uvIndex": "자외선 지수",
+    "sunrise": "일출",
+    "sunset": "일몰"
+  },
+  "profile": {
+    "openMenu": "프로필 메뉴 열기",
+    "browsingAsGuest": "게스트로 탐색 중",
+    "userFallback": "사용자",
+    "logIn": "로그인",
+    "signIn": "로그인",
+    "signOut": "로그아웃",
+    "signOutConfirmTitle": "로그아웃하시겠습니까?",
+    "removeFromFavorites": "즐겨찾기에서 제거",
+    "addToFavorites": "즐겨찾기에 추가"
+  },
+  "chip": {
+    "remove": "제거"
+  },
+  "settings": {
+    "title": "설정",
+    "preferences": "환경 설정",
+    "temperatureUnit": "온도 단위",
+    "temperatureUnitSub": "온도 표시 방식 선택",
+    "haptics": "햅틱",
+    "hapticsSub": "진동 및 터치 피드백 활성화",
+    "data": "데이터",
+    "clearFavorites": "즐겨찾기 지우기",
+    "clearFavoritesSub": "저장된 모든 즐겨찾기 도시 제거",
+    "clearFavoritesTitle": "즐겨찾기를 지우시겠습니까?",
+    "clearFavoritesMsg": "저장된 모든 즐겨찾기 도시가 제거됩니다.",
+    "clearRecentSearches": "최근 검색 지우기",
+    "clearRecentSearchesSub": "저장된 도시 검색 기록 제거",
+    "clearRecentSearchesTitle": "최근 검색을 지우시겠습니까?",
+    "clearRecentSearchesMsg": "저장된 도시 검색 기록이 제거됩니다.",
+    "clearWeatherCache": "날씨 캐시 지우기",
+    "clearWeatherCacheSub": "저장된 예보 및 날씨 데이터 초기화",
+    "clearWeatherCacheTitle": "날씨 캐시를 지우시겠습니까?",
+    "clearWeatherCacheMsg": "저장된 예보 및 날씨 데이터가 초기화됩니다.",
+    "notifications": "알림",
+    "dailySummary": "일일 날씨 요약",
+    "comingSoon": "곧 제공 예정...",
+    "expoPushToken": "EXPO 푸시 토큰",
+    "expoPushTokenDesc": "expo.dev/notifications에서 이 토큰을 사용하여 테스트 푸시 알림을 보내세요.",
+    "shareToken": "토큰 공유",
+    "registeringPush": "푸시 알림 등록 중...",
+    "language": "언어",
+    "languageSub": "선호하는 표시 언어 선택",
+    "languageAuto": "자동 (기기 언어)"
+  },
+  "auth": {
+    "appName": "날씨 앱",
+    "emailPlaceholder": "이메일 주소",
+    "passwordPlaceholder": "비밀번호",
+    "confirmPasswordPlaceholder": "비밀번호 확인",
+    "forgotPassword": "비밀번호를 잊으셨나요?",
+    "sendResetLink": "재설정 링크 보내기",
+    "createAccount": "계정 만들기",
+    "signIn": "로그인",
+    "signUp": "가입",
+    "or": "또는",
+    "continueWithGoogle": "Google로 계속",
+    "continueAsGuest": "게스트로 계속",
+    "backToSignIn": "로그인으로 돌아가기",
+    "resetPassword": "비밀번호 재설정",
+    "resetPasswordSub": "계정 이메일을 사용하여 비밀번호를 재설정하세요.",
+    "setNewPassword": "새 비밀번호 설정",
+    "setNewPasswordSub": "계정의 강력한 비밀번호를 선택하세요.",
+    "newPassword": "새 비밀번호",
+    "confirmNewPassword": "새 비밀번호 확인",
+    "updatePassword": "비밀번호 업데이트",
+    "passwordUpdated": "비밀번호가 업데이트되었습니다!",
+    "takingYouBack": "앱으로 돌아가는 중…",
+    "errors": {
+      "emailRequired": "이메일을 입력하세요.",
+      "passwordRequired": "비밀번호를 입력하세요.",
+      "passwordsDoNotMatch": "비밀번호가 일치하지 않습니다.",
+      "newPasswordRequired": "새 비밀번호를 입력하세요."
+    },
+    "success": {
+      "resetLinkSent": "재설정 링크가 전송되었습니다. 받은 편지함을 확인하세요.",
+      "accountCreated": "계정이 생성되었습니다! 로그인하기 전에 이메일을 확인하세요."
+    }
+  },
+  "about": {
+    "title": "정보",
+    "version": "버전 {{version}}",
+    "copyright": "Copyright © {{year}} Jonathan Concepcion.\n모든 권리 보유.",
+    "termsOfService": "서비스 약관",
+    "privacyPolicy": "개인정보 처리방침",
+    "ossNotice": "오픈 소스 소프트웨어 고지"
+  },
+  "location": {
+    "title": "위치",
+    "notFound": "위치를 찾을 수 없습니다"
+  },
+  "errorBoundary": {
+    "title": "오류가 발생했습니다",
+    "tryAgain": "다시 시도"
+  }
+}
