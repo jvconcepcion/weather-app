@@ -1,10 +1,18 @@
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
-import { useEffect } from 'react';
+import { useRouter } from 'expo-router';
+import { useEffect, useRef } from 'react';
 import { Platform } from 'react-native';
 import { upsertPushToken } from '../lib/pushTokens';
 import { useAuthStore } from '../store/useAuthStore';
 import { useAppStore } from '../store/useAppStore';
+
+interface NotificationData {
+  cityId?: string;
+  cityName?: string;
+  lat?: string;
+  lon?: string;
+}
 
 async function registerForPushNotificationsAsync(): Promise<{
   token: string | null;
@@ -45,6 +53,9 @@ export function usePushNotifications() {
   const setPushTokenError = useAppStore((state) => state.setPushTokenError);
   const pushToken = useAppStore((state) => state.pushToken);
   const user = useAuthStore((state) => state.user);
+  const router = useRouter();
+  const routerRef = useRef(router);
+  routerRef.current = router;
 
   useEffect(() => {
     registerForPushNotificationsAsync().then(({ token, error }) => {
@@ -53,11 +64,26 @@ export function usePushNotifications() {
     });
 
     const notifSub = Notifications.addNotificationReceivedListener(() => {
-      // foreground notification received
+      // banner and sound are handled by setNotificationHandler in _layout.tsx
     });
 
-    const responseSub = Notifications.addNotificationResponseReceivedListener(() => {
-      // user tapped the notification
+    const responseSub = Notifications.addNotificationResponseReceivedListener((response) => {
+      const data = response.notification.request.content.data as NotificationData;
+
+      if (data.cityId && data.cityName && data.lat && data.lon) {
+        routerRef.current.push({
+          pathname: '/location/[id]',
+          params: {
+            id: data.cityId,
+            name: data.cityName,
+            lat: data.lat,
+            lon: data.lon,
+          },
+        });
+        return;
+      }
+
+      routerRef.current.push('/');
     });
 
     return () => {

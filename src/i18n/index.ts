@@ -9,7 +9,13 @@ import zh from './locales/zh.json';
 export const SUPPORTED_LOCALES = ['en', 'zh', 'ko', 'ja'] as const;
 
 export function resolveLocale(tag: string | null): string {
-  const raw = tag ?? Localization.getLocales()[0]?.languageCode ?? 'en';
+  let deviceLocale: string | null = null;
+  try {
+    deviceLocale = Localization.getLocales()[0]?.languageCode ?? null;
+  } catch {
+    deviceLocale = null;
+  }
+  const raw = tag ?? deviceLocale ?? 'en';
   const base = (raw ?? 'en').split('-')[0].split('_')[0];
   return (SUPPORTED_LOCALES as readonly string[]).includes(base) ? base : 'en';
 }
