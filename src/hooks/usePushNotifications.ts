@@ -2,6 +2,8 @@ import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import { useEffect } from 'react';
 import { Platform } from 'react-native';
+import { upsertPushToken } from '../lib/pushTokens';
+import { useAuthStore } from '../store/useAuthStore';
 import { useAppStore } from '../store/useAppStore';
 
 async function registerForPushNotificationsAsync(): Promise<{
@@ -41,6 +43,8 @@ async function registerForPushNotificationsAsync(): Promise<{
 export function usePushNotifications() {
   const setPushToken = useAppStore((state) => state.setPushToken);
   const setPushTokenError = useAppStore((state) => state.setPushTokenError);
+  const pushToken = useAppStore((state) => state.pushToken);
+  const user = useAuthStore((state) => state.user);
 
   useEffect(() => {
     registerForPushNotificationsAsync().then(({ token, error }) => {
@@ -61,4 +65,9 @@ export function usePushNotifications() {
       responseSub.remove();
     };
   }, [setPushToken, setPushTokenError]);
+
+  useEffect(() => {
+    if (!user || !pushToken) return;
+    upsertPushToken(user.id, pushToken);
+  }, [user, pushToken]);
 }
