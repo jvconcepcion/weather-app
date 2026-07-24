@@ -1,10 +1,10 @@
 import { WeatherSkeleton } from '@/components/WeatherSkeleton';
 import { triggerLightImpact, triggerSuccessHaptic } from '@/utils/haptics';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useTranslation } from 'react-i18next';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Linking, RefreshControl, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -17,8 +17,8 @@ import { SearchBar } from '../components/SearchBar';
 import { WeatherStats } from '../components/WeatherStats';
 import { getGradient, NIGHT_GRADIENT } from '../constants/theme';
 import { getWMO } from '../constants/wmo';
-import { useLocation } from '../hooks/useLocation';
 import { useBreakpoint } from '../hooks/useBreakpoint';
+import { useLocation } from '../hooks/useLocation';
 import { useNetworkStatus } from '../hooks/useNetworkStatus';
 import { useWeather } from '../hooks/useWeather';
 import { useAppStore, type City } from '../store/useAppStore';
@@ -105,7 +105,8 @@ export default function HomeScreen() {
           }
         >
           <View className="mb-6 mt-6 gap-3">
-            <View className="items-end">
+            <View className="flex-row items-center gap-2">
+              <View className="flex-1" />
               <ProfileMenuButton
                 onLoginPress={() => router.push('/login')}
                 onSettingsPress={() => router.push('/settings')}

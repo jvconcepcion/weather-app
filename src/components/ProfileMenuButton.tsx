@@ -122,6 +122,7 @@ export function ProfileMenuButton({
   const [menuPos, setMenuPos] = useState({ top: 0, right: 0 });
   const [showSignOutConfirm, setShowSignOutConfirm] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
+  const [avatarError, setAvatarError] = useState(false);
   const buttonRef = useRef<View>(null);
   const user = useAuthStore((state) => state.user);
   const isGuest = useAuthStore((state) => state.isGuest);
@@ -132,6 +133,7 @@ export function ProfileMenuButton({
   const initial = fullName.charAt(0).toUpperCase() || email.charAt(0).toUpperCase();
   const avatarUrl: string | null =
     user?.user_metadata?.avatar_url ?? user?.user_metadata?.picture ?? null;
+  const showAvatar = !!avatarUrl && !avatarError;
 
   function closeMenu() {
     setIsOpen(false);
@@ -164,7 +166,6 @@ export function ProfileMenuButton({
       },
     );
   }
-
   return (
     <>
       <TouchableOpacity
@@ -173,14 +174,15 @@ export function ProfileMenuButton({
         activeOpacity={0.85}
         accessibilityRole="button"
         accessibilityLabel={t('profile.openMenu')}
-        className={`h-11 w-11 items-center justify-center rounded-full border ${user ? 'border-violet-600/60 bg-violet-600' : 'border-white/[0.18] bg-white/[0.14]'}`}
+        className={`h-11 w-11 items-center justify-center rounded-full border ${user ? (showAvatar ? 'border-violet-600/60' : 'border-violet-600/60 bg-violet-600') : 'border-white/[0.18] bg-white/[0.14]'}`}
       >
         {user ? (
-          avatarUrl ? (
+          showAvatar ? (
             <Image
-              source={{ uri: avatarUrl }}
+              source={{ uri: avatarUrl! }}
               contentFit="cover"
-              className="h-11 w-11 rounded-full"
+              style={{ width: 44, height: 44, borderRadius: 22 }}
+              onError={() => setAvatarError(true)}
             />
           ) : (
             <Text className="text-[15px] font-bold text-white">{initial}</Text>
