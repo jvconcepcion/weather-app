@@ -71,6 +71,7 @@
     "clearWeatherCacheMsg": "这将重置已存储的预报和天气数据。",
     "notifications": "通知",
     "dailySummary": "每日天气摘要",
+    "dailySummarySub": "每天早上为您的第一个收藏城市推送天气更新（UTC 7点）",
     "comingSoon": "即将推出...",
     "expoPushToken": "EXPO 推送令牌",
     "expoPushTokenDesc": "在 expo.dev/notifications 使用此令牌发送测试推送通知。",

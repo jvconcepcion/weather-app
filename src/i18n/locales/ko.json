@@ -71,6 +71,7 @@
     "clearWeatherCacheMsg": "저장된 예보 및 날씨 데이터가 초기화됩니다.",
     "notifications": "알림",
     "dailySummary": "일일 날씨 요약",
+    "dailySummarySub": "첫 번째 즐겨찾기 도시의 아침 날씨 업데이트 (UTC 오전 7시)",
     "comingSoon": "곧 제공 예정...",
     "expoPushToken": "EXPO 푸시 토큰",
     "expoPushTokenDesc": "expo.dev/notifications에서 이 토큰을 사용하여 테스트 푸시 알림을 보내세요.",
