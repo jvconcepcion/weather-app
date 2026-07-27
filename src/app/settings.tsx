@@ -1,7 +1,7 @@
 import { showConfirmAlert } from '@/utils/alets';
 import { triggerLightImpact } from '@/utils/haptics';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, Share, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { PageHeader } from '../components/PageHeader';
@@ -12,7 +12,9 @@ import { SettingsRow } from '../components/settings/SettingsRow';
 import { SettingsSectionLabel } from '../components/settings/SettingsSectionLabel';
 import { UnitToggle } from '../components/settings/UnitToggle';
 import { useBreakpoint } from '../hooks/useBreakpoint';
+import { useNotificationPreferences } from '../hooks/useNotificationPreferences';
 import { useAppStore } from '../store/useAppStore';
+import { useAuthStore } from '../store/useAuthStore';
 
 const LANGUAGE_OPTIONS: { value: string | null; native: string }[] = [
   { value: null, native: '' },
@@ -65,7 +67,8 @@ export default function SettingsScreen() {
   const pushToken = useAppStore((state) => state.pushToken);
   const pushTokenError = useAppStore((state) => state.pushTokenError);
 
-  const [dailySummary, setDailySummary] = useState(false);
+  const user = useAuthStore((state) => state.user);
+  const { dailySummaryEnabled, toggleDailySummary, loading } = useNotificationPreferences();
   const { isTablet } = useBreakpoint();
 
   const handleShareToken = () => {
@@ -193,13 +196,13 @@ export default function SettingsScreen() {
         <SettingsCard className="mb-0">
           <SettingsRow
             title={t('settings.dailySummary')}
-            subtitle={t('settings.comingSoon')}
+            subtitle={t('settings.dailySummarySub')}
             right={
-              <View className="opacity-60">
+              <View className={loading ? 'opacity-50' : undefined}>
                 <Switch
-                  value={dailySummary}
-                  onValueChange={setDailySummary}
-                  disabled
+                  value={dailySummaryEnabled}
+                  onValueChange={toggleDailySummary}
+                  disabled={!user || loading}
                   trackColor={{ false: '#334155', true: '#7c3aed' }}
                   thumbColor="#cbd5e1"
                 />

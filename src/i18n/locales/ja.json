@@ -71,6 +71,7 @@
     "clearWeatherCacheMsg": "保存済みの予報と天気データがリセットされます。",
     "notifications": "通知",
     "dailySummary": "毎日の天気サマリー",
+    "dailySummarySub": "最初のお気に入り都市の朝の天気をお届けします（UTC午前7時）",
     "comingSoon": "近日公開...",
     "expoPushToken": "EXPOプッシュトークン",
     "expoPushTokenDesc": "expo.dev/notificationsでこのトークンを使用してテストプッシュ通知を送信してください。",

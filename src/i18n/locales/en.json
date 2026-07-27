@@ -71,6 +71,7 @@
     "clearWeatherCacheMsg": "This will reset stored forecast and weather data.",
     "notifications": "Notifications",
     "dailySummary": "Daily weather summary",
+    "dailySummarySub": "Morning update for your first saved city (7 AM UTC)",
     "comingSoon": "Coming soon...",
     "expoPushToken": "EXPO PUSH TOKEN",
     "expoPushTokenDesc": "Use this token at expo.dev/notifications to send a test push notification.",
